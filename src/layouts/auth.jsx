@@ -41,7 +41,7 @@ export function Auth() {
 
   return (
     <div className="relative min-h-screen w-full">
-      <AlertBar
+      {/* <AlertBar
         type={alert.type}
         show={alert.show}
         message={alert.message}
@@ -54,7 +54,7 @@ export function Auth() {
             })
           );
         }}
-      />
+      /> */}
       <Loading isLoading={isLoading} />
       <div className="container relative z-40 mx-auto p-4">
         <Navbar routes={navbarRoutes} />

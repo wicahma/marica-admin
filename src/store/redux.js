@@ -1,16 +1,21 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, createReducer } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { authSlice } from "./slices/auth";
-import { mainSlice } from "./slices/main";
+import { authInitialState, authSlice } from "./slices/auth";
+import { mainInitialState, mainSlice } from "./slices/main";
 
-// import monitorReducersEnhancer from "./enhancers/monitorReducers";
-// import loggerMiddleware from "./middleware/logger";
-
-const store = configureStore({
-  reducer: {
+const rootReducer = createReducer(
+  {
+    auth: authInitialState,
+    main: mainInitialState,
+  },
+  {
     [authSlice.name]: authSlice.reducer,
     [mainSlice.name]: mainSlice.reducer,
-  },
+  }
+);
+
+const store = configureStore({
+  reducer: rootReducer,
   // middleware: (getDefaultMiddleware) =>
   //   getDefaultMiddleware().concat(loggerMiddleware),
   //   preloadedState,

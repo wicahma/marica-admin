@@ -9,19 +9,19 @@
 =========================================================
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import React from "react";
+import React, { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@material-tailwind/react";
 import { MaterialTailwindControllerProvider } from "@/context";
-import "../public/css/tailwind.css";
+import "../css/tailwind.css";
 import { Provider } from "react-redux";
 import store from "./store/redux";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <React.StrictMode>
+    <StrictMode>
       <BrowserRouter>
         <ThemeProvider>
           <MaterialTailwindControllerProvider>
@@ -29,6 +29,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           </MaterialTailwindControllerProvider>
         </ThemeProvider>
       </BrowserRouter>
-    </React.StrictMode>
+    </StrictMode>
   </Provider>
 );

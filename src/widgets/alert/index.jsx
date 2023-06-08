@@ -1,17 +1,19 @@
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
-import { Alert } from "@material-tailwind/react";
-import React from "react";
+import { Alert as Peringatan } from "@material-tailwind/react";
+import React, { useEffect, useState } from "react";
 
-const AlertBar = ({
-  show = false,
-  setShow = (data) => {},
-  type,
-  withTimeout = false,
-  timeout = 3000,
-  message = "Alert belum diatur",
-}) => {
-  const [color, setColor] = React.useState("green");
-  React.useEffect(() => {
+const AlertBar = (props) => {
+  const {
+    show = false,
+    setShow = () => {},
+    type,
+    withTimeout = false,
+    timeout = 3000,
+    message = "Alert belum diatur",
+  } = props;
+  const [color, setColor] = useState("green");
+
+  useEffect(() => {
     if (withTimeout) {
       setTimeout(() => {
         setShow(false);
@@ -19,7 +21,7 @@ const AlertBar = ({
     }
   }, [show]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     switch (type) {
       case "error":
         setColor("red");
@@ -39,7 +41,7 @@ const AlertBar = ({
 
   return (
     <div className="fixed left-0 z-[100] w-full">
-      <Alert
+      <Peringatan
         open={show}
         color={color}
         icon={<InformationCircleIcon strokeWidth={2} className="h-6 w-6" />}
@@ -50,8 +52,8 @@ const AlertBar = ({
         }}
         className="container mx-auto shadow-xl"
       >
-        {message}
-      </Alert>
+        <p>{message}</p>
+      </Peringatan>
     </div>
   );
 };

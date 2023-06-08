@@ -2,12 +2,12 @@ import {
   HomeIcon,
   UserCircleIcon,
   TableCellsIcon,
-  BellIcon,
   ArrowRightOnRectangleIcon,
-  UserPlusIcon,
+  CurrencyDollarIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
+import { Home, Profile, Tables, Payments } from "@/pages/dashboard";
 import { SignIn } from "@/pages/auth";
+import { paymentTable } from "./data";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -36,10 +36,10 @@ export const routes = [
         element: <Tables />,
       },
       {
-        icon: <BellIcon {...icon} />,
-        name: "notifactions",
-        path: "/notifactions",
-        element: <Notifications />,
+        icon: <CurrencyDollarIcon {...icon} />,
+        name: "payments",
+        path: "/payments",
+        element: <Payments paymentData={paymentTable} />,
       },
     ],
   },

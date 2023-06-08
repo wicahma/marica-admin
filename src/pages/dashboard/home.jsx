@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createElement } from "react";
 import {
   Typography,
   Card,
@@ -38,7 +38,7 @@ export function Home() {
             key={title}
             {...rest}
             title={title}
-            icon={React.createElement(icon, {
+            icon={createElement(icon, {
               className: "w-6 h-6 text-white",
             })}
             footer={
@@ -227,7 +227,7 @@ export function Home() {
                         : "after:h-4/6"
                     }`}
                   >
-                    {React.createElement(icon, {
+                    {createElement(icon, {
                       className: `!w-5 !h-5 ${color}`,
                     })}
                   </div>

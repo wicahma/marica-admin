@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+export const mainInitialState = {
   loading: false,
   alert: {
     type: "info",
@@ -11,7 +11,7 @@ const initialState = {
 
 export const mainSlice = createSlice({
   name: "main",
-  initialState: initialState,
+  initialState: mainInitialState,
   reducers: {
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -23,6 +23,8 @@ export const mainSlice = createSlice({
   },
 });
 
-export const { setLoading, setAlert } = mainSlice.actions;
+const { actions, reducer } = mainSlice;
 
-export default mainSlice.reducer;
+export const { setLoading, setAlert } = actions;
+
+export default reducer;

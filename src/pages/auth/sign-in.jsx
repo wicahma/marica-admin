@@ -13,9 +13,12 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { setAlert, setLoading } from "@/store/slices/main";
+import { useState } from "react";
+import { authLogin } from "@/store/actions";
 
 export function SignIn() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(),
+    [saveLogin, seaveLogin] = useState(false);
   return (
     <>
       <img
@@ -43,23 +46,15 @@ export function SignIn() {
               onSubmit={(values) => {
                 console.log(values);
                 dispatch(setLoading(true));
-                setTimeout(() => {
-                  dispatch(setLoading(false));
-                  dispatch(
-                    setAlert({
-                      message: "Login Success",
-                      type: "success",
-                      show: true,
-                    })
-                  );
-                }, 5000);
+                dispatch(authLogin(values, saveLogin));
+                dispatch(setLoading(false));
                 return false;
               }}
               validationSchema={Yup.object().shape({
                 email: Yup.string()
-                  .required("Email Dibutuhkan")
-                  .email("Email tidak valid"),
-                password: Yup.string().required("Password is required"),
+                  .required("Email dibutuhkan!")
+                  .email("Email tidak valid!"),
+                password: Yup.string().required("Password dibutuhkan!"),
               })}
             >
               {({
@@ -98,7 +93,11 @@ export function SignIn() {
                     size="lg"
                   />
                   <div className="-ml-2.5">
-                    <Checkbox label="Remember Me" />
+                    <Checkbox
+                      checked={saveLogin}
+                      onChange={() => seaveLogin(!saveLogin)}
+                      label="Remember Me"
+                    />
                   </div>
                   <Button
                     disabled={isSubmitting}

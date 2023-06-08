@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
   Button,
@@ -44,7 +44,7 @@ export function Configurator() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { openConfigurator, sidenavColor, sidenavType, fixedNavbar } =
     controller;
-  const [stars, setStars] = React.useState(0);
+  const [stars, setStars] = useState(0);
 
   const sidenavColors = {
     blue: "from-blue-400 to-blue-600",
@@ -55,7 +55,7 @@ export function Configurator() {
     pink: "from-pink-400 to-pink-600",
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetch(
       "https://api.github.com/repos/creativetimofficial/material-tailwind-dashboard-react"
     )

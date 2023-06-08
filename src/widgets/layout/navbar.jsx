@@ -1,19 +1,19 @@
-import React from "react";
+import React, { cloneElement, createElement, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import {
   Navbar as MTNavbar,
-  MobileNav,
   Typography,
   Button,
   IconButton,
+  Collapse,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 export function Navbar({ brandName, routes, action }) {
-  const [openNav, setOpenNav] = React.useState(false);
+  const [openNav, setOpenNav] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener(
       "resize",
       () => window.innerWidth >= 960 && setOpenNav(false)
@@ -32,7 +32,7 @@ export function Navbar({ brandName, routes, action }) {
         >
           <Link to={path} className="flex items-center gap-1 p-1 font-normal">
             {icon &&
-              React.createElement(icon, {
+              createElement(icon, {
                 className: "w-[18px] h-[18px] opacity-50 mr-1",
               })}
             {name}
@@ -54,7 +54,7 @@ export function Navbar({ brandName, routes, action }) {
           </Typography>
         </Link>
         <div className="hidden lg:block">{navList}</div>
-        {React.cloneElement(action, {
+        {cloneElement(action, {
           className: "hidden lg:inline-block",
         })}
         <IconButton
@@ -70,14 +70,14 @@ export function Navbar({ brandName, routes, action }) {
           )}
         </IconButton>
       </div>
-      <MobileNav open={openNav}>
+      <Collapse open={openNav}>
         <div className="container mx-auto">
           {navList}
-          {React.cloneElement(action, {
+          {cloneElement(action, {
             className: "w-full block lg:hidden",
           })}
         </div>
-      </MobileNav>
+      </Collapse>
     </MTNavbar>
   );
 }
