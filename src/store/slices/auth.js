@@ -19,23 +19,6 @@ export const authSlice = createSlice({
       state.adminToken = action.payload;
     },
   },
-  extraReducers(builder) {
-    builder
-      .addCase(authLogin.pending, (state, action) => {
-        console.log("running!");
-      })
-      .addCase(authLogin.fulfilled, (state, action) => {
-        console.log(action);
-      })
-      .addCase(authLogin.rejected, (state, action) => {
-        setAlert({
-          type: "error",
-          message: "Error pada saat Login",
-          show: true,
-        });
-        console.log(action);
-      });
-  },
 });
 
 export const { setAdminData, setAdminToken } = authSlice.actions;

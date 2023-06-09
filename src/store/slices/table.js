@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+export const tableInitialState = {
   user: [],
   video: [],
   payment: [],
@@ -8,7 +8,7 @@ const initialState = {
 
 export const tableSlice = createSlice({
   name: "table",
-  initialState: initialState,
+  initialState: tableInitialState,
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
@@ -24,6 +24,8 @@ export const tableSlice = createSlice({
   },
 });
 
-export const { setPayment, setUser, setVideo } = tableSlice.actions;
+const { actions, reducer } = tableSlice;
 
-export default tableSlice.reducer;
+export const { setPayment, setUser, setVideo } = actions;
+
+export default reducer;

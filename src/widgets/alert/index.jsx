@@ -8,11 +8,11 @@ const AlertBar = (props) => {
     setShow = () => {},
     type,
     withTimeout = false,
-    timeout = 3000,
+    timeout = 4000,
     message = "Alert belum diatur",
   } = props;
   const [color, setColor] = useState("green");
-
+  const [textColor, setTextColor] = useState("text-green-50");
   useEffect(() => {
     if (withTimeout) {
       setTimeout(() => {
@@ -25,15 +25,19 @@ const AlertBar = (props) => {
     switch (type) {
       case "error":
         setColor("red");
+        setTextColor("text-red-50");
         break;
       case "success":
         setColor("green");
+        setTextColor("text-green-50");
         break;
       case "warning":
-        setColor("yellow");
+        setColor("orange");
+        setTextColor("text-orange-50");
         break;
       case "info":
         setColor("blue");
+        setTextColor("text-blue-50");
       default:
         break;
     }
@@ -50,7 +54,7 @@ const AlertBar = (props) => {
           mount: { opacity: 1, y: 26 },
           unmount: { opacity: 0, y: -70 },
         }}
-        className="container mx-auto shadow-xl"
+        className={`container mx-auto shadow-xl ${textColor}`}
       >
         <p>{message}</p>
       </Peringatan>

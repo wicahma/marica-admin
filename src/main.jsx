@@ -18,16 +18,19 @@ import { MaterialTailwindControllerProvider } from "@/context";
 import "../css/tailwind.css";
 import { Provider } from "react-redux";
 import store from "./store/redux";
+import { AuthProvider } from "./Auth";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <StrictMode>
       <BrowserRouter>
-        <ThemeProvider>
-          <MaterialTailwindControllerProvider>
-            <App />
-          </MaterialTailwindControllerProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <MaterialTailwindControllerProvider>
+              <App />
+            </MaterialTailwindControllerProvider>
+          </ThemeProvider>
+        </AuthProvider>
       </BrowserRouter>
     </StrictMode>
   </Provider>

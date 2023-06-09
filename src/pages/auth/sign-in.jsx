@@ -12,7 +12,6 @@ import {
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { setAlert, setLoading } from "@/store/slices/main";
 import { useState } from "react";
 import { authLogin } from "@/store/actions";
 
@@ -40,21 +39,20 @@ export function SignIn() {
           <CardBody className="flex flex-col gap-4">
             <Formik
               initialValues={{
-                email: "",
+                identifier: "",
                 password: "",
               }}
               onSubmit={(values) => {
-                console.log(values);
-                dispatch(setLoading(true));
                 dispatch(authLogin(values, saveLogin));
-                dispatch(setLoading(false));
                 return false;
               }}
               validationSchema={Yup.object().shape({
-                email: Yup.string()
+                identifier: Yup.string()
                   .required("Email dibutuhkan!")
                   .email("Email tidak valid!"),
-                password: Yup.string().required("Password dibutuhkan!"),
+                password: Yup.string()
+                  .required("Password dibutuhkan!")
+                  .min(8, "Password minimal 8 karakter!"),
               })}
             >
               {({
@@ -67,14 +65,18 @@ export function SignIn() {
               }) => (
                 <Form className="space-y-3">
                   <Input
-                    value={values.email}
-                    error={errors.email && touched.email ? true : false}
-                    type="email"
-                    name="email"
+                    value={values.identifier}
+                    error={
+                      errors.identifier && touched.identifier ? true : false
+                    }
+                    type="text"
+                    name="identifier"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     label={
-                      errors.email && touched.email ? errors.email : "Email"
+                      errors.identifier && touched.identifier
+                        ? errors.identifier
+                        : "Email / Username"
                     }
                     size="lg"
                   />

@@ -10,7 +10,7 @@ import routes from "@/routes";
 import Loading from "@/widgets/loading";
 import AlertBar from "@/widgets/alert";
 import { useDispatch, useSelector } from "react-redux";
-import { setAlert } from "@/store/slices/main";
+import { setAlert, setLoading } from "@/store/slices/main";
 
 export function Auth() {
   const navbarRoutes = [
@@ -37,24 +37,26 @@ export function Auth() {
     ],
     alert = useSelector((state) => state.main.alert),
     isLoading = useSelector((state) => state.main.loading),
-    dispatcher = useDispatch();
+    dispatch = useDispatch();
 
   return (
     <div className="relative min-h-screen w-full">
-      {/* <AlertBar
+      <AlertBar
         type={alert.type}
         show={alert.show}
         message={alert.message}
+        withTimeout
         setShow={(data) => {
-          dispatcher(
-            setAlert({
-              show: data.show,
+          dispatch({
+            type: "main/setAlert",
+            payload: {
+              show: data,
               type: "",
               message: "Message belum diatur!",
-            })
-          );
+            },
+          });
         }}
-      /> */}
+      />
       <Loading isLoading={isLoading} />
       <div className="container relative z-40 mx-auto p-4">
         <Navbar routes={navbarRoutes} />
