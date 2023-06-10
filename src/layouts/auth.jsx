@@ -10,7 +10,6 @@ import routes from "@/routes";
 import Loading from "@/widgets/loading";
 import AlertBar from "@/widgets/alert";
 import { useDispatch, useSelector } from "react-redux";
-import { setAlert, setLoading } from "@/store/slices/main";
 
 export function Auth() {
   const navbarRoutes = [

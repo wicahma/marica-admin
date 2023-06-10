@@ -1,18 +1,18 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { setAlert } from "./store/slices/main";
 
 const AuthContext = createContext();
 
-const useLocalStorage = (keyName, defaultValue) => {
+const useStorage = (keyName, defaultValue) => {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const value = window.localStorage.getItem(keyName);
       if (value) {
-        return JSON.parse(value);
+        return JSON.parse(value).auth.adminData;
       } else {
-        window.localStorage.setItem(keyName, JSON.stringify(defaultValue));
+        // window.localStorage.setItem(keyName, JSON.stringify(defaultValue));
         return defaultValue;
       }
     } catch (err) {
@@ -21,7 +21,7 @@ const useLocalStorage = (keyName, defaultValue) => {
   });
   const setValue = (newValue) => {
     try {
-      window.localStorage.setItem(keyName, JSON.stringify(newValue));
+      // window.localStorage.setItem(keyName, JSON.stringify(newValue));
     } catch (err) {
       console.log(err);
     }
@@ -31,10 +31,18 @@ const useLocalStorage = (keyName, defaultValue) => {
 };
 
 export const AuthProvider = ({ children }) => {
-  // const [user, setUser] = useLocalStorage("admin", null);
-  const [user, setUser] = useState(
-    useSelector((state) => state.auth.adminData)
-  );
+  // const [user, setUser] = useStorage("state", {});
+  const userData = useSelector((state) => state.auth.adminData),
+    // dispatch = useDispatch(),
+    [user, setUser] = useState(userData);
+
+  useEffect(() => {
+    setUser(userData);
+  }, [userData]);
+
+  // if (Object.keys(userData).length === 0) {
+  //   dispatch(setAlert({ show: true, type: "warning", message: "Silahkan login terlebih dahulu!" }));
+  // }
   const navigate = useNavigate(),
     login = async (data) => {
       setUser(data);
@@ -42,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     },
     logout = () => {
       setUser(null);
-      navigate("/", { replace: true });
+      navigate("/auth/sign-in", { replace: true });
     },
     value = useMemo(
       () => ({
@@ -55,22 +63,6 @@ export const AuthProvider = ({ children }) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-const useAuth = () => {
+export const useAuth = () => {
   return useContext(AuthContext);
-};
-
-export const ProtectedRoute = ({ children }) => {
-  const auth = useAuth(),
-    dispatch = useDispatch();
-  if (Object.keys(auth.user).length === 0) {
-    dispatch(
-      setAlert({
-        show: true,
-        type: "warning",
-        message: "Anda belum login!",
-      })
-    );
-    return <Navigate to="/auth/sign-in" />;
-  }
-  return children;
 };

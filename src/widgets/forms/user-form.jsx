@@ -21,8 +21,8 @@ const UserForm = (props) => {
     handleChange,
   } = useFormikContext();
   return (
-    <div className="flex gap-5">
-      <Card className="w-3/5">
+    <div className="flex flex-wrap gap-5">
+      <Card className="w-full lg:w-3/5">
         <CardBody>
           <Form className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <div className="col-span-2">
@@ -45,7 +45,7 @@ const UserForm = (props) => {
                 size="md"
               />
             </div>
-            <div className="w-full">
+            <div className="col-span-2 w-full md:col-span-1">
               <Input
                 value={values.email}
                 error={errors.email && touched.email ? true : false}
@@ -59,7 +59,7 @@ const UserForm = (props) => {
                 size="md"
               />
             </div>
-            <div className="w-full">
+            <div className="col-span-2 w-full md:col-span-1">
               <Input
                 value={values.lahir}
                 error={errors.lahir && touched.lahir ? true : false}
@@ -74,7 +74,7 @@ const UserForm = (props) => {
                 size="md"
               />
             </div>
-            <div className="w-full">
+            <div className="col-span-2 w-full md:col-span-1">
               <Input
                 value={values.phone}
                 error={errors.phone && touched.phone ? true : false}
@@ -89,7 +89,7 @@ const UserForm = (props) => {
                 size="md"
               />
             </div>
-            <div className="w-full">
+            <div className="col-span-2 w-full md:col-span-1">
               <Input
                 value={values.username}
                 error={errors.username && touched.username ? true : false}
@@ -142,7 +142,7 @@ const UserForm = (props) => {
           </Form>
         </CardBody>
       </Card>
-      <Card className="w-2/5">
+      <Card className="grow">
         <CardBody>
           <Typography variant="h5" className="flex items-center gap-3 ">
             User Value

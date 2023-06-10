@@ -12,6 +12,7 @@ export const authSlice = createSlice({
   initialState: authInitialState,
   reducers: {
     setAdminData: (state, action) => {
+      console.log("state", state);
       state.adminData = action.payload;
     },
 

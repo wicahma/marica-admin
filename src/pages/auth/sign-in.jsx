@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -11,13 +10,28 @@ import {
 } from "@material-tailwind/react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { authLogin } from "@/store/actions";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 export function SignIn() {
   const dispatch = useDispatch(),
-    [saveLogin, seaveLogin] = useState(false);
+    isUserLoggedIn = useSelector((state) => state.auth.adminData),
+    isTokenExist = useSelector((state) => state.auth.adminToken),
+    [saveLogin, seaveLogin] = useState(false),
+    navigate = useNavigate(),
+    [seePassword, setSeePassword] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      if (isUserLoggedIn && isTokenExist) {
+        navigate("/dashboard/home");
+      }
+    };
+  }, [isUserLoggedIn, isTokenExist]);
+
   return (
     <>
       <img
@@ -83,10 +97,19 @@ export function SignIn() {
                   <Input
                     value={values.password}
                     error={errors.password && touched.password ? true : false}
-                    type="password"
+                    type={seePassword ? "text" : "password"}
                     name="password"
                     onBlur={handleBlur}
                     onChange={handleChange}
+                    icon={
+                      <Button
+                        className="w-full rounded-full p-0 text-blue-gray-500"
+                        color="white"
+                        onClick={() => setSeePassword(!seePassword)}
+                      >
+                        {seePassword ? <EyeIcon /> : <EyeSlashIcon />}
+                      </Button>
+                    }
                     label={
                       errors.password && touched.password
                         ? errors.password

@@ -28,8 +28,8 @@ const VideoForm = (props) => {
     thumbnailRef = React.useRef(null),
     quizAttachmentDataRef = React.useRef(null);
   return (
-    <div className="flex gap-5">
-      <Card className="w-3/5">
+    <div className="flex flex-wrap gap-5">
+      <Card className="w-full lg:w-3/5">
         <CardBody>
           <Form className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <div className="col-span-2">
@@ -57,11 +57,11 @@ const VideoForm = (props) => {
               />
             </div>
             <div
-              className={`row-span-2 flex w-full flex-col justify-between rounded-xl border ${
+              className={`col-span-2 row-span-2 flex w-full flex-col justify-between rounded-xl border md:col-span-1 ${
                 errors.thumbnail && touched.thumbnail
                   ? "border-red-500"
                   : "border-blue-gray-200"
-              } px-2 pb-2 pt-0`}
+              } gap-2 p-2`}
             >
               <div className="flex grow items-center justify-between">
                 <label
@@ -101,7 +101,7 @@ const VideoForm = (props) => {
                 type="file"
               />
             </div>
-            <div className="w-full">
+            <div className="col-span-2 w-full md:col-span-1">
               <Select
                 value={values.type}
                 error={errors.type && touched.type ? true : false}
@@ -114,7 +114,7 @@ const VideoForm = (props) => {
               </Select>
             </div>
             <Tooltips message={"Fitur sedang dinonaktifkan untuk saat ini"}>
-              <div className="w-full">
+              <div className="col-span-2 w-full md:col-span-1">
                 <Input
                   value={values.quizTimestamp}
                   error={
@@ -137,7 +137,7 @@ const VideoForm = (props) => {
               </div>
             </Tooltips>
             <Tooltips message="Fitur sedang dinonaktifkan untuk saat ini">
-              <div className="row-span-2 flex w-full flex-col justify-between rounded-xl bg-blue-gray-50 p-2">
+              <div className="col-span-2 row-span-2 flex w-full flex-col justify-between rounded-xl bg-blue-gray-50 p-2 md:col-span-1">
                 <div className="flex grow items-center">
                   <label
                     htmlFor="quizAttachmentData"
@@ -165,7 +165,7 @@ const VideoForm = (props) => {
               </div>
             </Tooltips>
             <Tooltips message="Fitur sedang dinonaktifkan untuk saat ini">
-              <div className="w-full">
+              <div className="col-span-2 w-full md:col-span-1">
                 <Select
                   value={values.quizType}
                   error={errors.quizType && touched.quizType ? true : false}
@@ -189,7 +189,7 @@ const VideoForm = (props) => {
               </div>
             </Tooltips>
             <Tooltips message={"Fitur sedang dinonaktifkan untuk saat ini"}>
-              <div className="w-full">
+              <div className="col-span-2 w-full md:col-span-1">
                 <Select
                   value={values.quizAttachmentType}
                   error={
@@ -257,7 +257,7 @@ const VideoForm = (props) => {
           </Form>
         </CardBody>
       </Card>
-      <Card className="w-2/5">
+      <Card className="grow">
         <CardBody>
           <Typography variant="h5" className="flex items-center gap-3 ">
             Video Value

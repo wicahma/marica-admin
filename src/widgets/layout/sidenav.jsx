@@ -8,15 +8,20 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useMaterialTailwindController, setOpenSidenav } from "@/context";
+import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/solid";
+import { setAdminData, setAdminToken } from "@/store/slices/auth";
+import { setAlert } from "@/store/slices/main";
+import { useDispatch } from "react-redux";
 
 export function Sidenav({ brandImg, routes }) {
-  const [controller, dispatch] = useMaterialTailwindController();
-  const { sidenavColor, sidenavType, openSidenav } = controller;
-  const sidenavTypes = {
-    dark: "bg-gradient-to-br from-blue-gray-800 to-blue-gray-900",
-    white: "bg-white shadow-lg",
-    transparent: "bg-transparent",
-  };
+  const [controller, dispatch] = useMaterialTailwindController(),
+    { sidenavColor, sidenavType, openSidenav } = controller,
+    sidenavTypes = {
+      dark: "bg-gradient-to-br from-blue-gray-800 to-blue-gray-900",
+      white: "bg-white shadow-lg",
+      transparent: "bg-transparent",
+    },
+    dispatcher = useDispatch();
 
   return (
     <aside
@@ -54,7 +59,7 @@ export function Sidenav({ brandImg, routes }) {
                   className="font-black uppercase opacity-75"
                 >
                   {title}
-                </Typography> 
+                </Typography>
               </li>
             )}
             {pages.map(({ icon, name, path }) => (
@@ -87,6 +92,27 @@ export function Sidenav({ brandImg, routes }) {
             ))}
           </ul>
         ))}
+        <Button
+          className="flex w-full items-center gap-4 px-4 capitalize"
+          variant="gradient"
+          color="red"
+          onClick={() => {
+            dispatcher(
+              setAlert({
+                show: true,
+                message: "Signed out successfully",
+                type: "info",
+              })
+            );
+            dispatcher(setAdminData({}));
+            dispatcher(setAdminToken(""));
+          }}
+        >
+          <ArrowLeftOnRectangleIcon className="aspect-square w-5" />
+          <Typography color="inherit" className="font-medium capitalize">
+            sign out
+          </Typography>
+        </Button>
       </div>
     </aside>
   );

@@ -28,6 +28,7 @@ export function Dashboard() {
         type={alert.type}
         show={alert.show}
         message={alert.message}
+        withTimeout
         setShow={(data) => {
           dispatcher(
             setAlert({

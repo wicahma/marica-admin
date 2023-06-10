@@ -8,7 +8,7 @@ const AlertBar = (props) => {
     setShow = () => {},
     type,
     withTimeout = false,
-    timeout = 4000,
+    timeout = 3000,
     message = "Alert belum diatur",
   } = props;
   const [color, setColor] = useState("green");
@@ -44,14 +44,14 @@ const AlertBar = (props) => {
   }, [type]);
 
   return (
-    <div className="fixed left-0 z-[100] w-full">
+    <div className="fixed left-0 z-[100] w-full px-5">
       <Peringatan
         open={show}
         color={color}
         icon={<InformationCircleIcon strokeWidth={2} className="h-6 w-6" />}
         onClose={() => setShow(false)}
         animate={{
-          mount: { opacity: 1, y: 26 },
+          mount: { opacity: 1, y: 20 },
           unmount: { opacity: 0, y: -70 },
         }}
         className={`container mx-auto shadow-xl ${textColor}`}

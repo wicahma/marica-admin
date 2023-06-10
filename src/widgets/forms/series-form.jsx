@@ -26,10 +26,10 @@ const SeriesForm = (props) => {
     } = useFormikContext(),
     thumbnailRef = React.useRef(null);
   return (
-    <div className="flex gap-5">
-      <Card className="w-3/5">
+    <div className="flex flex-wrap gap-5">
+      <Card className="w-full lg:w-3/5">
         <CardBody>
-          <Form className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          <Form className="grid grid-cols-2 gap-5">
             <div className="col-span-2">
               <Typography variant="h5" className="flex items-center gap-3">
                 Series Form{" "}
@@ -52,7 +52,7 @@ const SeriesForm = (props) => {
                 size="md"
               />
             </div>
-            <div className="w-full">
+            <div className="col-span-2 w-full md:col-span-1">
               <Textarea
                 value={values.deskripsi}
                 error={errors.deskripsi && touched.deskripsi ? true : false}
@@ -67,7 +67,7 @@ const SeriesForm = (props) => {
               />
             </div>
             <div
-              className={` flex h-fit w-full flex-col justify-between rounded-lg border ${
+              className={`col-span-2 flex h-fit w-full flex-col justify-between rounded-lg border md:col-span-1 ${
                 errors.thumbnail && touched.thumbnail
                   ? "border-red-500"
                   : "border-blue-gray-200"
@@ -174,7 +174,7 @@ const SeriesForm = (props) => {
           </Form>
         </CardBody>
       </Card>
-      <Card className="w-2/5">
+      <Card className="grow">
         <CardBody>
           <Typography variant="h5" className="flex items-center gap-3 ">
             Series Value
