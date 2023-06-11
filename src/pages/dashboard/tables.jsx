@@ -4,15 +4,25 @@ import {
   Tab,
   TabsBody,
   TabPanel,
-  Card,
-  CardBody,
 } from "@material-tailwind/react";
 import { tableTab } from "@/data";
 import MainTable from "@/widgets/tables";
-import { createElement } from "react";
+import { createElement, useEffect } from "react";
 import { Formik } from "formik";
+import { getAllDataTable, setValue } from "@/context/table";
+import { useDispatch, useSelector } from "react-redux";
 
 export function Tables() {
+  const dispatch = useDispatch(),
+    { user, video, series } = useSelector((state) => state.table);
+
+  useEffect(() => {
+    console.log("user", user);
+    return () => {
+      getAllDataTable(dispatch);
+    };
+  }, []);
+
   return (
     <div className="my-5 flex flex-col">
       <Tabs value="user">
@@ -29,7 +39,7 @@ export function Tables() {
         </TabsHeader>
         <TabsBody>
           {tableTab.map(
-            ({ value, data, titles, icon, form, initValue, validations }) => (
+            ({ value, titles, icon, form, initValue, validations }) => (
               <TabPanel className=" mt-5" key={value} value={value}>
                 <Formik
                   initialValues={initValue}
@@ -46,7 +56,7 @@ export function Tables() {
                       icon={createElement(icon, {
                         className: "w-6 h-6",
                       })}
-                      tableData={data}
+                      tableData={setValue(value, { user, video, series })}
                       tableTitle={titles}
                     />
                   </div>

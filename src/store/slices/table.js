@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const tableInitialState = {
   user: [],
   video: [],
+  series: [],
   payment: [],
 };
 
@@ -21,11 +22,15 @@ export const tableSlice = createSlice({
     setPayment: (state, action) => {
       state.payment = action.payload;
     },
+
+    setSeries: (state, action) => {
+      state.series = action.payload;
+    },
   },
 });
 
 const { actions, reducer } = tableSlice;
 
-export const { setPayment, setUser, setVideo } = actions;
+export const { setPayment, setUser, setVideo, setSeries } = actions;
 
 export default reducer;

@@ -6,9 +6,16 @@ import {
   Chip,
   Typography,
 } from "@material-tailwind/react";
-import React from "react";
+import React, { useState } from "react";
+import User from "./user";
+import Video from "./video";
+import Series from "./series";
+import EssentialDialog from "../Dialog/essential-dialog";
 
 const MainTable = ({ identifier, tableData, icon, tableTitle }) => {
+  const [essentials, setEssentials] = useState({}),
+    [open, setOpen] = useState(false),
+    handleOpen = () => setOpen(!open);
   return (
     <Card>
       <CardHeader
@@ -21,7 +28,7 @@ const MainTable = ({ identifier, tableData, icon, tableTitle }) => {
           Table {identifier}
         </Typography>
       </CardHeader>
-      <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
+      <CardBody className="w-full overflow-x-scroll px-0 pt-0 pb-2">
         <table className="w-full min-w-[640px] table-auto">
           <thead>
             <tr>
@@ -41,67 +48,33 @@ const MainTable = ({ identifier, tableData, icon, tableTitle }) => {
             </tr>
           </thead>
           <tbody>
-            {tableData.map(({ img, name, email, job, online, date }, key) => {
-              const className = `py-3 px-5 ${
-                key === tableData.length - 1
-                  ? ""
-                  : "border-b border-blue-gray-50"
-              }`;
-
-              return (
-                <tr key={name}>
-                  <td className={className}>
-                    <div className="flex items-center gap-4">
-                      <Avatar src={img} alt={name} size="sm" />
-                      <div>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-semibold"
-                        >
-                          {name}
-                        </Typography>
-                        <Typography className="text-xs font-normal text-blue-gray-500">
-                          {email}
-                        </Typography>
-                      </div>
-                    </div>
-                  </td>
-                  <td className={className}>
-                    <Typography className="text-xs font-semibold text-blue-gray-600">
-                      {job[0]}
-                    </Typography>
-                    <Typography className="text-xs font-normal text-blue-gray-500">
-                      {job[1]}
-                    </Typography>
-                  </td>
-                  <td className={className}>
-                    <Chip
-                      variant="gradient"
-                      color={online ? "green" : "blue-gray"}
-                      value={online ? "online" : "offline"}
-                      className="py-0.5 px-2 text-[11px] font-medium"
+            {tableData.map((value, key) => {
+              switch (identifier) {
+                case "user":
+                  return (
+                    <User
+                      key={key}
+                      data={value}
+                      essential={(data) => setEssentials(data)}
+                      handleOpen={(data) => handleOpen(data)}
                     />
-                  </td>
-                  <td className={className}>
-                    <Typography className="text-xs font-semibold text-blue-gray-600">
-                      {date}
-                    </Typography>
-                  </td>
-                  <td className={className}>
-                    <Typography
-                      as="a"
-                      href="#"
-                      className="text-xs font-semibold text-blue-gray-600"
-                    >
-                      Edit
-                    </Typography>
-                  </td>
-                </tr>
-              );
+                  );
+                case "video":
+                  return <Video key={key} data={value} />;
+                case "series":
+                  return <Series key={key} data={value} />;
+                default:
+                  return <tr>Mapping belum diatur!</tr>;
+              }
             })}
           </tbody>
         </table>
+        {/* //NOTE - Table User Dialog */}
+        <EssentialDialog
+          open={open}
+          handleOpen={(data) => handleOpen()}
+          data={essentials}
+        />
       </CardBody>
     </Card>
   );

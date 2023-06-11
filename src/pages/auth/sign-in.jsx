@@ -25,11 +25,9 @@ export function SignIn() {
     [seePassword, setSeePassword] = useState(false);
 
   useEffect(() => {
-    return () => {
-      if (isUserLoggedIn && isTokenExist) {
-        navigate("/dashboard/home");
-      }
-    };
+    if (isUserLoggedIn && isTokenExist) {
+      navigate("/dashboard/home");
+    }
   }, [isUserLoggedIn, isTokenExist]);
 
   return (

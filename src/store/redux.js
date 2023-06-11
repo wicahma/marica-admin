@@ -6,12 +6,13 @@ import { tableInitialState, tableSlice } from "./slices/table";
 import { authLogin } from "./actions";
 import { throttle } from "lodash";
 import { useRoutes } from "react-router-dom";
+import { builderContext } from "./builder";
 
 // NOTE - For load state to local storage / session storage
 const loadState = () => {
   try {
     const serializedState = localStorage.getItem("state");
-    console.log("serializedState - load", serializedState);
+    // console.log("serializedState - load", serializedState);
     if (serializedState === null) {
       return {
         auth: authInitialState,
@@ -33,7 +34,7 @@ const loadState = () => {
 const saveState = (state) => {
   try {
     const serializedState = JSON.stringify(state);
-    console.log("serializedState - save", serializedState);
+    // console.log("serializedState - save", serializedState);
     localStorage.setItem("state", serializedState);
   } catch (e) {
     // Ignore write errors;
@@ -55,45 +56,8 @@ const rootReducer = createReducer(
   //   table: tableInitialState,
   // },
   (builder) => {
-    builder
-      .addCase(authLogin.pending, (state, action) => {
-        state.main.loading = true;
-        console.log("action pending", action);
-      })
-      .addCase(authLogin.fulfilled, (state, action) => {
-        state.main.alert = {
-          type: "success",
-          message: `Login berhasil, selamat datang ${action.payload.data.nama}!`,
-          show: true,
-        };
-        state.main.loading = false;
-        state.auth.adminData = {
-          _id: action.payload.data._id,
-          nama: action.payload.data.nama,
-          userType: action.payload.data.userType,
-          email: action.payload.data.email,
-          imageID: action.payload.data.imageID,
-          essentials: {
-            username: action.payload.data.essentials.username,
-            password: action.payload.data.essentials.password,
-            dataBilling: action.payload.data.essentials.dataBilling,
-            kidsAnalytics: action.payload.data.essentials.kidsAnalytics,
-          },
-          validated: action.payload.data.validated,
-          provider: action.payload.data.provider,
-        };
-        state.auth.adminToken = action.payload.data.token;
-      })
-      .addCase(authLogin.rejected, (state, action) => {
-        state.main.alert = {
-          type: "error",
-          message: `Login gagal, ${action.error.message}!`,
-          show: true,
-        };
-        console.log("state", state);
-        console.log("action", action);
-        state.main.loading = false;
-      });
+    builderContext(builder);
+
     builder.addMatcher(
       (action) =>
         action.type.startsWith("main") ||
@@ -113,14 +77,14 @@ const store = configureStore({
   // middleware: (getDefaultMiddleware) =>
   //   getDefaultMiddleware().concat(loggerMiddleware),
   //   preloadedState,
-  devTools: process.env.NODE_ENV !== "production",
   // enhancers: [monitorReducersEnhancer],
+  devTools: process.env.NODE_ENV !== "production",
 });
 setupListeners(store.dispatch);
 
 store.subscribe(
   throttle(() => {
-    console.log("store.getState()", store.getState());
+    console.log("Data saved to local storage!");
     saveState(store.getState());
   }, 1000)
 );

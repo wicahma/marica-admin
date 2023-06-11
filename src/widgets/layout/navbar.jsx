@@ -54,9 +54,9 @@ export function Navbar({ brandName, routes, action }) {
           </Typography>
         </Link>
         <div className="hidden lg:block">{navList}</div>
-        {cloneElement(action, {
+        {/* {cloneElement(action, {
           className: "hidden lg:inline-block",
-        })}
+        })} */}
         <IconButton
           variant="text"
           size="sm"
@@ -73,9 +73,9 @@ export function Navbar({ brandName, routes, action }) {
       <Collapse open={openNav}>
         <div className="container mx-auto">
           {navList}
-          {cloneElement(action, {
+          {/* {cloneElement(action, {
             className: "w-full block lg:hidden",
-          })}
+          })} */}
         </div>
       </Collapse>
     </MTNavbar>
@@ -83,7 +83,7 @@ export function Navbar({ brandName, routes, action }) {
 }
 
 Navbar.defaultProps = {
-  brandName: "Material Tailwind React",
+  brandName: "Marica",
   action: (
     <a
       href="https://www.creative-tim.com/product/material-tailwind-dashboard-react"
