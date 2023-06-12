@@ -11,8 +11,10 @@ const AlertBar = (props) => {
     timeout = 3000,
     message = "Alert belum diatur",
   } = props;
-  const [color, setColor] = useState("green");
-  const [textColor, setTextColor] = useState("text-green-50");
+
+  const [color, setColor] = useState("green"),
+    [textColor, setTextColor] = useState("text-green-50");
+
   useEffect(() => {
     if (withTimeout) {
       setTimeout(() => {

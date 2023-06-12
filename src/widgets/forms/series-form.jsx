@@ -9,10 +9,12 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { Form, useFormikContext } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tooltips from "../micros/tooltips";
-import { TrashIcon } from "@heroicons/react/24/solid";
+import { TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { findBarang } from "@/context/forms/series";
+import { useDispatch } from "react-redux";
+import { setAlert } from "@/store/slices/main";
 
 const SeriesForm = ({ video }) => {
   const {
@@ -26,7 +28,9 @@ const SeriesForm = ({ video }) => {
       handleChange,
     } = useFormikContext(),
     thumbnailRef = React.useRef(null),
+    dispatch = useDispatch(),
     [filteredVideo, setFilteredVideo] = useState(video);
+
   return (
     <div className="flex flex-wrap gap-5 lg:flex-nowrap">
       <Card className="w-full shrink-0 lg:w-3/5">
@@ -113,7 +117,7 @@ const SeriesForm = ({ video }) => {
                 type="file"
               />
             </div>
-            <div className="w-full">
+            <div className="col-span-2 w-full">
               <Select
                 animate={{
                   mount: { y: 0 },
@@ -122,18 +126,27 @@ const SeriesForm = ({ video }) => {
                 label={`${
                   errors.videos && touched.videos ? errors.videos : "ID Barang"
                 }`}
-                value={""}
                 error={touched.videos && errors.videos ? true : false}
-                // onMouseUp={() => setDataBarang(barang)}
                 onChange={(e) => {
-                  // setFieldValue("videos", e?.toString());
-                  // setFieldValue("barangKe", "");
-                  // addBarangKe(e);
+                  if (values.videos.filter((data) => data === e).length > 0) {
+                    return dispatch(
+                      setAlert({
+                        type: "info",
+                        message: "Data telah ditambahkan sebelumnya!",
+                        show: true,
+                      })
+                    );
+                  }
+                  setFieldValue("videos", [e, ...values.videos]);
                 }}
                 menuProps={{
                   className: "min-w-max max-w-[80vw]",
                 }}
-                selected={(e) => `anjas ini value yanng ke-select`}
+                selected={(e) => {
+                  if (values.videos.length > 0) {
+                    return <p className="uppercase">{values.videos[0]}</p>;
+                  }
+                }}
               >
                 <Input
                   type="text"
@@ -189,7 +202,35 @@ const SeriesForm = ({ video }) => {
           </Typography>
           <p>Judul Series - {values.videoURL}</p>
           <p>Deskripsi - {values.thumbnail[0] && values.thumbnail[0].name}</p>
-          <p>Video - {values.videos.map((data) => data)}</p>
+          <div className="mt-3 flex w-full flex-col items-center justify-center gap-2 rounded-xl border border-blue-gray-300 px-3 py-2 text-center">
+            {values.videos.length !== 0 ? (
+              values.videos.map((data, key) => (
+                <Typography
+                  key={key}
+                  className="flex w-full items-center justify-between text-xs font-medium uppercase text-blue-gray-500"
+                >
+                  {data}
+                  <Button
+                    color="red"
+                    id={`delete-${data}-${key}`}
+                    onClick={() => {
+                      setFieldValue(
+                        "videos",
+                        values.videos.filter((id) => id !== data)
+                      );
+                    }}
+                    className="p-0"
+                  >
+                    <XMarkIcon className="h-5 rounded-full p-1 text-white" />
+                  </Button>
+                </Typography>
+              ))
+            ) : (
+              <Typography className="mx-auto text-xs text-blue-gray-300">
+                Belum ada ID Video
+              </Typography>
+            )}
+          </div>
           <div className="mt-3 rounded-xl border border-blue-gray-300 px-3 py-1">
             <p>Thumbnail - {values.thumbnail[0] && values.thumbnail[0].name}</p>
             <a

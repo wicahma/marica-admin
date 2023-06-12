@@ -4,6 +4,8 @@ import {
   Tab,
   TabsBody,
   TabPanel,
+  Card,
+  CardBody,
 } from "@material-tailwind/react";
 import { tableTab } from "@/data";
 import MainTable from "@/widgets/tables";
@@ -11,6 +13,7 @@ import { createElement, useEffect } from "react";
 import { Formik } from "formik";
 import { getAllDataTable, setValue } from "@/context/table";
 import { useDispatch, useSelector } from "react-redux";
+import Pagination from "@/widgets/micros/pagination";
 
 export function Tables() {
   const dispatch = useDispatch(),
@@ -62,6 +65,30 @@ export function Tables() {
                       tableData={setValue(value, { user, video, series })}
                       tableTitle={titles}
                     />
+                    <Card>
+                      <CardBody className="py-2">
+                        <Pagination
+                          identifier={value}
+                          data={(data) => {
+                            switch (data.toLowerCase()) {
+                              case "video":
+                                return video;
+                              case "series":
+                                return series;
+                              case "user":
+                                return user;
+                              default:
+                                return [];
+                            }
+                          }}
+                          activeIndex={(index) => console.log(index)}
+                          pageData={(data) => {
+                            // console.log(data);
+                            return data;
+                          }}
+                        />
+                      </CardBody>
+                    </Card>
                   </div>
                 </Formik>
               </TabPanel>
