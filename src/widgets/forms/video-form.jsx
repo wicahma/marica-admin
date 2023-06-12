@@ -28,8 +28,8 @@ const VideoForm = (props) => {
     thumbnailRef = React.useRef(null),
     quizAttachmentDataRef = React.useRef(null);
   return (
-    <div className="flex flex-wrap gap-5">
-      <Card className="w-full lg:w-3/5">
+    <div className="flex flex-wrap gap-5 lg:flex-nowrap">
+      <Card className="w-full shrink-0 lg:w-3/5">
         <CardBody>
           <Form className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <div className="col-span-2">
@@ -52,6 +52,33 @@ const VideoForm = (props) => {
                   errors.videoURL && touched.videoURL
                     ? errors.videoURL
                     : "Alamat URL Video"
+                }
+                size="md"
+              />
+            </div>
+            <div className="col-span-2 w-full ">
+              <Input
+                value={values.title}
+                error={errors.title && touched.title ? true : false}
+                type="text"
+                name="title"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                label={errors.title && touched.title ? errors.title : "Judul"}
+                size="md"
+              />
+            </div>
+            <div className="col-span-2 w-full ">
+              <Textarea
+                value={values.description}
+                error={errors.description && touched.description ? true : false}
+                name="description"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                label={
+                  errors.description && touched.description
+                    ? errors.description
+                    : "Deskripsi"
                 }
                 size="md"
               />
@@ -257,8 +284,8 @@ const VideoForm = (props) => {
           </Form>
         </CardBody>
       </Card>
-      <Card className="grow">
-        <CardBody>
+      <Card className="lg:2/5 grow">
+        <CardBody className="break-all">
           <Typography variant="h5" className="flex items-center gap-3 ">
             Video Value
             <span className="rounded-md bg-red-400 px-2 text-xs font-medium uppercase text-white">
@@ -266,12 +293,33 @@ const VideoForm = (props) => {
             </span>
           </Typography>
           <p>Video Url - {values.videoURL}</p>
-          <p>Thumbnail - {values.thumbnail[0] && values.thumbnail[0].name}</p>
+          <p>Judul - {values.title}</p>
           <p>Tipe Video - {values.type}</p>
+          <div className="rounded-xl border border-blue-gray-300 px-3 py-1">
+            <p>Deskripsi - {values.description}</p>
+          </div>
+          <div className="mt-3 rounded-xl border border-blue-gray-300 px-3 py-1">
+            <p>Thumbnail - {values.thumbnail[0] && values.thumbnail[0].name}</p>
+            <a
+              href={
+                values.thumbnail[0] && URL.createObjectURL(values.thumbnail[0])
+              }
+              target="_blank"
+            >
+              <img
+                src={
+                  values.thumbnail[0] &&
+                  URL.createObjectURL(values.thumbnail[0])
+                }
+                className="mb-2 w-full rounded-lg"
+                alt={values.thumbnail[0] && values.thumbnail[0].name}
+              />
+            </a>
+          </div>
           <Tooltips message={"Fitur sedang dinonaktifkan untuk saat ini"}>
             <div
               id="disabled-features"
-              className="rounded-xl bg-gray-400 py-1 px-3 font-normal text-white"
+              className="mt-3 rounded-xl bg-blue-gray-300 py-1 px-3 font-normal text-white"
             >
               <p>Quiz Timestamp - {}</p>
               <p>Quiz Attachment Data - {}</p>

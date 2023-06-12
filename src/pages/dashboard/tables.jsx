@@ -17,7 +17,6 @@ export function Tables() {
     { user, video, series } = useSelector((state) => state.table);
 
   useEffect(() => {
-    console.log("user", user);
     return () => {
       getAllDataTable(dispatch);
     };
@@ -25,7 +24,7 @@ export function Tables() {
 
   return (
     <div className="my-5 flex flex-col">
-      <Tabs value="user">
+      <Tabs value="series">
         <TabsHeader>
           {tableTab.map(({ label, value }) => (
             <Tab
@@ -50,7 +49,11 @@ export function Tables() {
                   validationSchema={validations}
                 >
                   <div className="space-y-10">
-                    {createElement(form)}
+                    {createElement(form, {
+                      user,
+                      video,
+                      series,
+                    })}
                     <MainTable
                       identifier={value}
                       icon={createElement(icon, {

@@ -1,4 +1,7 @@
-export const findBarang = (value, setValue = () => {}) => {
-  console.log(value);
-  return setValue(value);
+export const findBarang = (value, data, setValue = () => {}) => {
+  const video = data.filter(({ _id, title }) => {
+    return _id.includes(value);
+    // || title.includes(value)
+  });
+  return setValue(video);
 };

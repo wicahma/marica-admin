@@ -11,6 +11,8 @@ export const userValue = {
 
 export const videoValue = {
   videoURL: "",
+  title: "",
+  description: "",
   thumbnail: [], // files validation
   type: "", // paid or free
   quizTimestamp: "", // not-required in init

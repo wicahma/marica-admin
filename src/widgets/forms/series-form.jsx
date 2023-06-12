@@ -3,17 +3,18 @@ import {
   Card,
   CardBody,
   Input,
+  Option,
   Select,
   Textarea,
   Typography,
 } from "@material-tailwind/react";
 import { Form, useFormikContext } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import Tooltips from "../micros/tooltips";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { findBarang } from "@/context/forms/series";
 
-const SeriesForm = (props) => {
+const SeriesForm = ({ video }) => {
   const {
       errors,
       resetForm,
@@ -24,10 +25,11 @@ const SeriesForm = (props) => {
       handleBlur,
       handleChange,
     } = useFormikContext(),
-    thumbnailRef = React.useRef(null);
+    thumbnailRef = React.useRef(null),
+    [filteredVideo, setFilteredVideo] = useState(video);
   return (
-    <div className="flex flex-wrap gap-5">
-      <Card className="w-full lg:w-3/5">
+    <div className="flex flex-wrap gap-5 lg:flex-nowrap">
+      <Card className="w-full shrink-0 lg:w-3/5">
         <CardBody>
           <Form className="grid grid-cols-2 gap-5">
             <div className="col-span-2">
@@ -112,7 +114,7 @@ const SeriesForm = (props) => {
               />
             </div>
             <div className="w-full">
-              {/* <Select
+              <Select
                 animate={{
                   mount: { y: 0 },
                   unmount: { y: 25 },
@@ -120,13 +122,16 @@ const SeriesForm = (props) => {
                 label={`${
                   errors.videos && touched.videos ? errors.videos : "ID Barang"
                 }`}
-                value={values.videos[0]}
+                value={""}
                 error={touched.videos && errors.videos ? true : false}
                 // onMouseUp={() => setDataBarang(barang)}
                 onChange={(e) => {
                   // setFieldValue("videos", e?.toString());
                   // setFieldValue("barangKe", "");
                   // addBarangKe(e);
+                }}
+                menuProps={{
+                  className: "min-w-max max-w-[80vw]",
                 }}
                 selected={(e) => `anjas ini value yanng ke-select`}
               >
@@ -136,21 +141,21 @@ const SeriesForm = (props) => {
                   color="gray"
                   label="Cari ID / Nama Barang"
                   onChange={(e) =>
-                    findBarang(e.target.value, (data) =>
-                      console.log("ini adalah pemanggilan dari parent")
+                    findBarang(e.target.value, video, (data) =>
+                      setFilteredVideo(data)
                     )
                   }
                 />
-                {[1, 1, 1, 1, 1].map((item, i) => (
+                {filteredVideo.map(({ _id, title }, i) => (
                   <Option
-                    value={item._id}
+                    value={_id}
                     key={`${i}-idbarangs`}
                     className="uppercase"
                   >
-                    {item._id} - {item.jenisBarang}
+                    {_id} - {title}
                   </Option>
                 ))}
-              </Select> */}
+              </Select>
             </div>
             <div className="col-span-2 flex justify-end gap-5">
               <Button
@@ -174,8 +179,8 @@ const SeriesForm = (props) => {
           </Form>
         </CardBody>
       </Card>
-      <Card className="grow">
-        <CardBody>
+      <Card className="lg:2/5 grow">
+        <CardBody className="break-all">
           <Typography variant="h5" className="flex items-center gap-3 ">
             Series Value
             <span className="rounded-md bg-red-400 px-2 text-xs font-medium uppercase text-white">
@@ -184,8 +189,25 @@ const SeriesForm = (props) => {
           </Typography>
           <p>Judul Series - {values.videoURL}</p>
           <p>Deskripsi - {values.thumbnail[0] && values.thumbnail[0].name}</p>
-          <p>Thumbnail - </p>
           <p>Video - {values.videos.map((data) => data)}</p>
+          <div className="mt-3 rounded-xl border border-blue-gray-300 px-3 py-1">
+            <p>Thumbnail - {values.thumbnail[0] && values.thumbnail[0].name}</p>
+            <a
+              href={
+                values.thumbnail[0] && URL.createObjectURL(values.thumbnail[0])
+              }
+              target="_blank"
+            >
+              <img
+                src={
+                  values.thumbnail[0] &&
+                  URL.createObjectURL(values.thumbnail[0])
+                }
+                className="mb-2 w-full rounded-lg"
+                alt={values.thumbnail[0] && values.thumbnail[0].name}
+              />
+            </a>
+          </div>
         </CardBody>
       </Card>
     </div>

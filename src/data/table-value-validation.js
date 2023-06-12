@@ -37,6 +37,12 @@ export const userValidation = Yup.object().shape({
 
 export const videoValidation = Yup.object().shape({
   videoURL: Yup.string().required("URL video harus diisi"),
+  title: Yup.string()
+    .required("Judul video harus diisi!")
+    .max(100, "Judul tidak boleh lebih dari 100 karakter"),
+  description: Yup.string()
+    .notRequired()
+    .max(2000, "Deskripsi tidak boleh lebih dari 2000 karakter"),
   thumbnail: Yup.array()
     .required("Thumbnail harus diisi")
     .test("files-length", "File thumbnail harus diisi", (value) => {
