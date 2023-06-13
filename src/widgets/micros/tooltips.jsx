@@ -6,11 +6,13 @@ const Tooltips = ({
   children,
   className = "bg-white text-blue-gray-400",
   message,
+  enable = true,
 }) => {
   return (
     <Tooltip
+      interactive
       content={
-        <div className="flex gap-3">
+        <div className={`${enable ? "flex" : "hidden"} gap-3`}>
           <InformationCircleIcon className="aspect-square w-5" />
           <p>{message}</p>
         </div>

@@ -1,8 +1,9 @@
-const type = "add";
+const type = "create";
 export const userValue = {
   id: "", // not-required in init
   nama: "",
   email: "",
+  password: "", // not-required in update
   lahir: "", // not-required in init
   phone: "", // not-required in init
   username: "", // not-required in init

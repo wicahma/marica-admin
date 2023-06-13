@@ -42,6 +42,8 @@ export const tableTab = [
     value: "video",
     titles: [
       "ID",
+      "Judul",
+      "Deskripsi",
       "URL Video",
       "Thumbnail",
       "Tipe Video",

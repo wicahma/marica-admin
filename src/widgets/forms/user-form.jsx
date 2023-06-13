@@ -29,7 +29,7 @@ const UserForm = (props) => {
       setFieldValue("id", selectedData._id ?? "");
       setFieldValue("nama", selectedData.nama ?? "");
       setFieldValue("email", selectedData.email ?? "");
-      setFieldValue("lahir", selectedData.lahir ?? "");
+      setFieldValue("lahir", selectedData.lahir.split("T")[0] ?? "");
       setFieldValue("phone", selectedData.essentials.phone ?? "");
       setFieldValue("username", selectedData.essentials.username ?? "");
       setFieldValue("address", selectedData.essentials.address ?? "");
@@ -49,7 +49,7 @@ const UserForm = (props) => {
                 User Form{" "}
                 <span
                   className={`rounded-md ${
-                    values.fetchType !== "add"
+                    values.fetchType !== "create"
                       ? "bg-light-blue-400"
                       : "bg-red-400"
                   } px-2 text-xs font-medium uppercase text-white`}
@@ -77,6 +77,23 @@ const UserForm = (props) => {
                 size="md"
               />
             </div>
+            <div className="col-span-2 w-full">
+              <Input
+                value={values.password}
+                error={errors.password && touched.password ? true : false}
+                type="text"
+                name="password"
+                onBlur={handleBlur}
+                onChange={(e) => setFieldValue("password", e.target.value)}
+                disabled={values.fetchType === "update" ? true : false}
+                label={
+                  errors.password && touched.password
+                    ? errors.password
+                    : "Password"
+                }
+                size="md"
+              />
+            </div>
             <div className="col-span-2 w-full md:col-span-1">
               <Input
                 value={values.email}
@@ -99,7 +116,7 @@ const UserForm = (props) => {
                 name="lahir"
                 onBlur={handleBlur}
                 onChange={(e) => setFieldValue("lahir", e.target.value)}
-                disabled={values.fetchType === "add" ? true : false}
+                disabled={values.fetchType === "create" ? true : false}
                 label={
                   errors.lahir && touched.lahir ? errors.lahir : "Tanggal Lahir"
                 }
@@ -114,7 +131,7 @@ const UserForm = (props) => {
                 name="phone"
                 onBlur={handleBlur}
                 onChange={(e) => setFieldValue("phone", e.target.value)}
-                disabled={values.fetchType === "add" ? true : false}
+                disabled={values.fetchType === "create" ? true : false}
                 label={
                   errors.phone && touched.phone ? errors.phone : "Nomor Telepon"
                 }
@@ -129,7 +146,7 @@ const UserForm = (props) => {
                 name="username"
                 onBlur={handleBlur}
                 onChange={(e) => setFieldValue("username", e.target.value)}
-                disabled={values.fetchType === "add" ? true : false}
+                disabled={values.fetchType === "create" ? true : false}
                 label={
                   errors.username && touched.username
                     ? errors.username
@@ -145,7 +162,7 @@ const UserForm = (props) => {
                 name="nama"
                 onBlur={handleBlur}
                 onChange={(e) => setFieldValue("address", e.target.value)}
-                disabled={values.fetchType === "add" ? true : false}
+                disabled={values.fetchType === "create" ? true : false}
                 label={
                   errors.address && touched.address ? errors.address : "Address"
                 }
@@ -168,7 +185,7 @@ const UserForm = (props) => {
                 color="green"
                 type="submit"
               >
-                {values.fetchType !== "add" ? "Update User" : "Buat User"}
+                {values.fetchType !== "create" ? "Update User" : "Buat User"}
               </Button>
             </div>
           </Form>
@@ -180,7 +197,9 @@ const UserForm = (props) => {
             User Value
             <span
               className={`rounded-md ${
-                values.fetchType !== "add" ? "bg-light-blue-400" : "bg-red-400"
+                values.fetchType !== "create"
+                  ? "bg-light-blue-400"
+                  : "bg-red-400"
               } px-2 text-xs font-medium uppercase text-white`}
             >
               {values.fetchType}

@@ -13,7 +13,17 @@ import { setSelectedData } from "@/store/slices/table";
 import { useDispatch } from "react-redux";
 
 const Video = ({
-  data: { _id, videoURL, thumbnail, type, active, like, dislike },
+  data: {
+    _id,
+    videoURL,
+    thumbnail,
+    type,
+    active,
+    like,
+    dislike,
+    title,
+    description,
+  },
   selectedData = () => {},
 }) => {
   const className = "border-b border-blue-gray-50 py-3 px-2 text-left",
@@ -26,6 +36,18 @@ const Video = ({
         <Typography variant="small" className="font-medium">
           {_id}
         </Typography>
+      </td>
+      <td className={`${className}`}>
+        <div className="flex items-center justify-center">
+          <Typography variant="small">{title}</Typography>
+        </div>
+      </td>
+      <td className={`${className} max-w-[100px]`}>
+        <div className="flex items-center justify-center">
+          <Typography variant="small" className="break-all">
+            {description.slice(0, 100)}
+          </Typography>
+        </div>
       </td>
       <td className={`${className}`}>
         <div className="flex min-w-max items-center justify-center gap-3">
@@ -96,6 +118,8 @@ const Video = ({
                       _id,
                       videoURL,
                       thumbnail,
+                      title,
+                      description,
                       type,
                       active,
                       like,

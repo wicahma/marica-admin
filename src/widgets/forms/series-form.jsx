@@ -57,7 +57,7 @@ const SeriesForm = ({ video }) => {
                 Series Form{" "}
                 <span
                   className={`rounded-md ${
-                    values.fetchType !== "add"
+                    values.fetchType !== "create"
                       ? "bg-light-blue-400"
                       : "bg-red-400"
                   } px-2 text-xs font-medium uppercase text-white`}
@@ -226,7 +226,9 @@ const SeriesForm = ({ video }) => {
                 color="green"
                 type="submit"
               >
-                {values.fetchType !== "add" ? "Update Series" : "Buat Series"}
+                {values.fetchType !== "create"
+                  ? "Update Series"
+                  : "Buat Series"}
               </Button>
             </div>
           </Form>
@@ -238,7 +240,9 @@ const SeriesForm = ({ video }) => {
             Series Value
             <span
               className={`rounded-md ${
-                values.fetchType !== "add" ? "bg-light-blue-400" : "bg-red-400"
+                values.fetchType !== "create"
+                  ? "bg-light-blue-400"
+                  : "bg-red-400"
               } px-2 text-xs font-medium uppercase text-white`}
             >
               {values.fetchType}

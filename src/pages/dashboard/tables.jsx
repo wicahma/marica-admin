@@ -9,14 +9,16 @@ import {
 } from "@material-tailwind/react";
 import { tableTab } from "@/data";
 import MainTable from "@/widgets/tables";
-import { createElement, useEffect, useState } from "react";
+import { createElement, useState } from "react";
 import { Formik } from "formik";
-import { setValue } from "@/context/table";
-import { useSelector } from "react-redux";
+import { setValue, submitHandler } from "@/context/table";
+import { useDispatch, useSelector } from "react-redux";
 import Pagination from "@/widgets/micros/pagination";
 
 export function Tables() {
   const { user, video, series } = useSelector((state) => state.table),
+    { adminToken } = useSelector((state) => state.auth),
+    dispatch = useDispatch(),
     [activePage, setActivePage] = useState({
       user: 1,
       video: 1,
@@ -44,7 +46,13 @@ export function Tables() {
                 <Formik
                   initialValues={initValue}
                   onSubmit={(values, actions) => {
-                    console.log(values);
+                    submitHandler({
+                      values,
+                      actions,
+                      dispatch,
+                      adminToken,
+                      identifier: value.toLowerCase(),
+                    });
                     return false;
                   }}
                   validationSchema={validations}

@@ -23,7 +23,7 @@ export const setValue = (value, data) => {
 
 export const deleteUser = async (id, dispatch, token) => {
   dispatch(setLoading(true));
-  const res = await axios
+  const response = await axios
     .delete(`/user/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -38,7 +38,6 @@ export const deleteUser = async (id, dispatch, token) => {
         })
       );
       dispatch(userData());
-      console.log(res);
     })
     .catch((err) => {
       dispatch(
@@ -51,12 +50,12 @@ export const deleteUser = async (id, dispatch, token) => {
       console.log(err);
     })
     .finally(() => dispatch(setLoading(false)));
-  return res;
+  return response;
 };
 
 export const deleteVideo = async (id, dispatch, token) => {
   dispatch(setLoading(true));
-  const res = await axios
+  const response = await axios
     .delete(`/video/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -71,7 +70,6 @@ export const deleteVideo = async (id, dispatch, token) => {
         })
       );
       dispatch(videoData());
-      console.log(res);
     })
     .catch((err) => {
       dispatch(
@@ -84,12 +82,12 @@ export const deleteVideo = async (id, dispatch, token) => {
       console.log(err);
     })
     .finally(() => dispatch(setLoading(false)));
-  return res;
+  return response;
 };
 
 export const deleteSeries = async (id, dispatch, token) => {
   dispatch(setLoading(true));
-  const res = await axios
+  const response = await axios
     .delete(`/series/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -104,7 +102,6 @@ export const deleteSeries = async (id, dispatch, token) => {
         })
       );
       dispatch(seriesData());
-      console.log(res);
     })
     .catch((err) => {
       dispatch(
@@ -117,5 +114,147 @@ export const deleteSeries = async (id, dispatch, token) => {
       console.log(err);
     })
     .finally(() => dispatch(setLoading(false)));
-  return res;
+  return response;
+};
+
+//SECTION - Create Data Section
+
+const createUser = async (data, dispatch, token) => {
+  dispatch(setLoading(true));
+  const response = await axios
+    .post(`/user`, data)
+    .then((res) => {
+      dispatch(
+        setAlert({
+          type: "success",
+          message: `User dengan nama ${res.data.nama} berhasil dibuat!`,
+          show: true,
+        })
+      );
+      dispatch(userData());
+    })
+    .catch((err) => {
+      dispatch(
+        setAlert({
+          type: "error",
+          message: `User gagal dibuat!, silahkan lihat error pada konsol`,
+          show: true,
+        })
+      );
+      console.log(err);
+    })
+    .finally(() => dispatch(setLoading(false)));
+  return response;
+};
+
+const createVideo = async (data, dispatch, token) => {
+  dispatch(setLoading(true));
+  const formData = new FormData();
+
+  Object.keys(data).forEach((key) => {
+    formData.append(key, data[key]);
+  });
+
+  const response = await axios
+    .post(`/video`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      dispatch(
+        setAlert({
+          type: "success",
+          message: `Video dengan judul ${res.data.judul} berhasil dibuat!`,
+          show: true,
+        })
+      );
+      dispatch(videoData());
+    })
+    .catch((err) => {
+      dispatch(
+        setAlert({
+          type: "error",
+          message: `Video gagal dibuat!, silahkan lihat error pada konsol`,
+          show: true,
+        })
+      );
+      console.log(err);
+    })
+    .finally(() => dispatch(setLoading(false)));
+  return response;
+};
+
+//SECTION - End of Create Data Section
+
+//SECTION - Update Data Section
+
+const updateUser = async (data, dispatch, token) => {
+  dispatch(setLoading(true));
+  const response = await axios
+    .put(`/user`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      dispatch(
+        setAlert({
+          type: "success",
+          message: `Query sukses! ${res.data.message}`,
+          show: true,
+        })
+      );
+      dispatch(userData());
+    })
+    .catch((err) => {
+      dispatch(
+        setAlert({
+          type: "error",
+          message: `User gagal diupdate!, silahkan lihat error pada konsol`,
+          show: true,
+        })
+      );
+      console.log(err);
+    })
+    .finally(() => dispatch(setLoading(false)));
+  return response;
+};
+
+export const submitHandler = async ({
+  values,
+  actions,
+  dispatch,
+  adminToken,
+  identifier,
+}) => {
+  if (values.fetchType === "create") {
+    switch (identifier) {
+      case "user":
+        await createUser(values, dispatch, actions);
+        break;
+      case "video":
+        await createVideo(values, dispatch, adminToken);
+        break;
+      case "series":
+        break;
+      default:
+        alert("Fetching data belum diatur untuk data ini!");
+        break;
+    }
+  } else if (values.fetchType === "update") {
+    switch (identifier) {
+      case "user":
+        await updateUser(values, dispatch, adminToken);
+        break;
+      case "video":
+        break;
+      case "series":
+        break;
+      default:
+        alert("Fetching data belum diatur untuk data ini!");
+        break;
+    }
+  }
 };

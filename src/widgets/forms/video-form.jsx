@@ -1,4 +1,4 @@
-import { InformationCircleIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/solid";
 import {
   Button,
   Card,
@@ -61,7 +61,7 @@ const VideoForm = (props) => {
                 Video Form{" "}
                 <span
                   className={`rounded-md ${
-                    values.fetchType !== "add"
+                    values.fetchType !== "create"
                       ? "bg-light-blue-400"
                       : "bg-red-400"
                   } px-2 text-xs font-medium uppercase text-white`}
@@ -120,52 +120,66 @@ const VideoForm = (props) => {
                 size="md"
               />
             </div>
-            <div
-              className={`col-span-2 row-span-2 flex w-full flex-col justify-between rounded-xl border md:col-span-1 ${
-                errors.thumbnail && touched.thumbnail
-                  ? "border-red-500"
-                  : "border-blue-gray-200"
-              } gap-2 p-2`}
+            <Tooltips
+              enable={values.fetchType === "update" ? disabledInput : false}
+              message={"Input dinonaktifkan ketika melakukan Query Update"}
             >
-              <div className="flex grow items-center justify-between">
-                <label
-                  htmlFor="thumbnail"
-                  className={` inline-block pl-3 text-sm font-normal capitalize ${
-                    errors.thumbnail && touched.thumbnail
-                      ? "text-red-500"
-                      : "text-blue-gray-500 dark:text-blue-gray-200"
-                  }`}
-                >
-                  {errors.thumbnail && touched.thumbnail
-                    ? errors.thumbnail
-                    : "thumbnail"}
-                </label>
-                <Tooltips message={"Hapus File"}>
-                  <Button
-                    color="red"
-                    className="rounded-full p-2"
-                    onClick={() => {
-                      setFieldValue("thumbnail", []);
-                      thumbnailRef.current.value = "";
-                      thumbnailRef.current.files = FileList[{}];
-                    }}
-                    variant="gradient"
+              <div
+                className={`col-span-2 row-span-2 flex w-full flex-col justify-between rounded-xl border md:col-span-1 ${
+                  errors.thumbnail && touched.thumbnail
+                    ? "border-red-500"
+                    : "border-blue-gray-200"
+                } relative gap-2 p-2 ${
+                  values.fetchType === "update"
+                    ? "before:content-['Tambah gambar dinonaktifkan ketika melakukan update data'] before:absolute before:top-0 before:left-0 before:z-20 before:h-full before:w-full before:rounded-xl before:bg-blue-gray-50/50 before:text-black before:backdrop-blur-sm"
+                    : ""
+                }`}
+              >
+                <div className="flex grow items-center justify-between">
+                  <label
+                    htmlFor="thumbnail"
+                    className={` inline-block pl-3 text-sm font-normal capitalize ${
+                      errors.thumbnail && touched.thumbnail
+                        ? "text-red-500"
+                        : "text-blue-gray-500 dark:text-blue-gray-200"
+                    }`}
                   >
-                    <TrashIcon className="aspect-square h-5" />
-                  </Button>
-                </Tooltips>
+                    {errors.thumbnail && touched.thumbnail
+                      ? errors.thumbnail
+                      : "thumbnail"}
+                  </label>
+                  <Tooltips message={"Hapus File"}>
+                    <Button
+                      color="red"
+                      className="rounded-full p-2"
+                      onClick={() => {
+                        setFieldValue("thumbnail", {});
+                        thumbnailRef.current.value = "";
+                        thumbnailRef.current.files = FileList[{}];
+                      }}
+                      variant="gradient"
+                    >
+                      <TrashIcon className="aspect-square h-5" />
+                    </Button>
+                  </Tooltips>
+                </div>
+                <input
+                  accept="image/*"
+                  ref={thumbnailRef}
+                  disabled={
+                    values.fetchType === "update" ? disabledInput : false
+                  }
+                  name="thumbnail"
+                  onChange={(e) => {
+                    setFieldValue("thumbnail", e.target.files[0]);
+                    console.log(e.target.files[0]);
+                  }}
+                  className="focus:border-primary focus:shadow-te-primary dark:focus:border-primary relative m-0 block max-h-[2.5rem] w-full min-w-0 flex-auto cursor-pointer rounded-lg border border-solid border-blue-gray-200 bg-clip-padding px-3 py-[0.12rem] font-normal leading-[2.15] text-blue-gray-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.12rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-blue-gray-200 file:px-3 file:py-[0.12rem] file:text-blue-gray-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-blue-gray-200 focus:text-blue-gray-700 focus:outline-none dark:border-blue-gray-600 dark:text-blue-gray-200 dark:file:bg-blue-gray-700 dark:file:text-blue-gray-100"
+                  id="thumbnail"
+                  type="file"
+                />
               </div>
-              <input
-                accept="image/*"
-                ref={thumbnailRef}
-                name="thumbnail"
-                disabled={disabledInput ? true : false}
-                onChange={(e) => setFieldValue("thumbnail", e.target.files)}
-                className="focus:border-primary focus:shadow-te-primary dark:focus:border-primary relative m-0 block max-h-[2.5rem] w-full min-w-0 flex-auto cursor-pointer rounded-lg border border-solid border-blue-gray-200 bg-clip-padding px-3 py-[0.12rem] font-normal leading-[2.15] text-blue-gray-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.12rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-blue-gray-200 file:px-3 file:py-[0.12rem] file:text-blue-gray-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-blue-gray-200 focus:text-blue-gray-700 focus:outline-none dark:border-blue-gray-600 dark:text-blue-gray-200 dark:file:bg-blue-gray-700 dark:file:text-blue-gray-100"
-                id="thumbnail"
-                type="file"
-              />
-            </div>
+            </Tooltips>
             <div className="col-span-2 w-full md:col-span-1">
               <Select
                 value={values.type}
@@ -214,7 +228,9 @@ const VideoForm = (props) => {
                 <input
                   accept="image/*"
                   disabled={
-                    values.fetchType === "add" && disabledInput ? true : false
+                    values.fetchType === "create" && disabledInput
+                      ? true
+                      : false
                   }
                   ref={quizAttachmentDataRef}
                   name="quizAttachmentData"
@@ -295,7 +311,11 @@ const VideoForm = (props) => {
             <div className="col-span-2 flex justify-end gap-5">
               <Button
                 variant="text"
-                onClick={() => resetForm()}
+                onClick={() => {
+                  thumbnailRef.current.value = "";
+                  thumbnailRef.current.files = FileList[{}];
+                  resetForm();
+                }}
                 disabled={isSubmitting ? true : false}
                 color="red"
                 type="reset"
@@ -308,7 +328,7 @@ const VideoForm = (props) => {
                 color="green"
                 type="submit"
               >
-                {values.fetchType !== "add" ? "Update Video" : "Buat Video"}
+                {values.fetchType !== "create" ? "Update Video" : "Buat Video"}
               </Button>
             </div>
           </Form>
@@ -320,7 +340,9 @@ const VideoForm = (props) => {
             Video Value
             <span
               className={`rounded-md ${
-                values.fetchType !== "add" ? "bg-light-blue-400" : "bg-red-400"
+                values.fetchType !== "create"
+                  ? "bg-light-blue-400"
+                  : "bg-red-400"
               } px-2 text-xs font-medium uppercase text-white`}
             >
               {values.fetchType}
@@ -334,7 +356,7 @@ const VideoForm = (props) => {
           </div>
           <div className="mt-3 rounded-xl border border-blue-gray-300 px-3 py-1">
             <p>Thumbnail - {values.thumbnail[0] && values.thumbnail[0].name}</p>
-            {values.fetchType !== "add" && (
+            {values.fetchType === "create" && (
               <a
                 href={
                   values.thumbnail[0] &&
