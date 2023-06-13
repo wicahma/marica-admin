@@ -10,10 +10,12 @@ import {
 import routes from "@/routes";
 import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
 import AlertBar from "@/widgets/alert";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loading from "@/widgets/loading";
 import { useDispatch, useSelector } from "react-redux";
 import { setAlert } from "@/store/slices/main";
+import { getAllDataTable } from "@/context/table";
+import { getBalance } from "@/store/actions";
 
 export function Dashboard() {
   const [controller, dispatch] = useMaterialTailwindController(),
@@ -21,6 +23,14 @@ export function Dashboard() {
     isLoading = useSelector((state) => state.main.loading),
     dispatcher = useDispatch(),
     { sidenavType } = controller;
+
+  useEffect(() => {
+    return () => {
+      getAllDataTable(dispatcher);
+      dispatcher(getBalance());
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#19cbd1]">
       <Sidenav routes={routes} brandImg={"/img/logo.png"} />
