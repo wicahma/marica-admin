@@ -1,4 +1,5 @@
-import { seriesData, userData, videoData } from "../actions";
+import { pageDivider } from "@/context/table/pagination";
+import { getBalance, seriesData, userData, videoData } from "../actions";
 
 export const tableBuilder = (builder) => {
   builder
@@ -8,7 +9,9 @@ export const tableBuilder = (builder) => {
     })
     .addCase(userData.fulfilled, (state, action) => {
       state.main.loading = false;
-      state.table.user = action.payload.data;
+      const pagesData = pageDivider(action.payload.data);
+      state.table.user.data = pagesData.data;
+      state.table.user.pages = pagesData.pages;
     })
     .addCase(userData.rejected, (state, action) => {
       state.main.loading = false;
@@ -28,7 +31,9 @@ export const tableBuilder = (builder) => {
     })
     .addCase(videoData.fulfilled, (state, action) => {
       state.main.loading = false;
-      state.table.video = action.payload.data;
+      const pagesData = pageDivider(action.payload.data);
+      state.table.video.data = pagesData.data;
+      state.table.video.pages = pagesData.pages;
     })
     .addCase(videoData.rejected, (state, action) => {
       state.main.loading = false;
@@ -48,13 +53,35 @@ export const tableBuilder = (builder) => {
     })
     .addCase(seriesData.fulfilled, (state, action) => {
       state.main.loading = false;
-      state.table.series = action.payload.data;
+      const pagesData = pageDivider(action.payload.data);
+      state.table.series.data = pagesData.data;
+      state.table.series.pages = pagesData.pages;
     })
     .addCase(seriesData.rejected, (state, action) => {
       state.main.loading = false;
       state.main.alert = {
         type: "error",
         message: `Fetching data gagal, ${action.error.message}!`,
+        show: true,
+      };
+      console.log("state", state);
+      console.log("action", action);
+    });
+
+  builder
+    .addCase(getBalance.pending, (state, action) => {
+      state.main.loading = true;
+      console.log("action pending balance", action);
+    })
+    .addCase(getBalance.fulfilled, (state, action) => {
+      state.main.loading = false;
+      state.table.payment.balance = action.payload.data;
+    })
+    .addCase(getBalance.rejected, (state, action) => {
+      state.main.loading = false;
+      state.main.alert = {
+        type: "error",
+        message: `Fetching data Balance gagal, ${action.error.message}!`,
         show: true,
       };
       console.log("state", state);
