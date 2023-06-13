@@ -4,10 +4,17 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/solid";
 import { Button, Chip, Switch, Typography } from "@material-tailwind/react";
-import React, { useState } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Tooltips from "../micros/tooltips";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSelectedData } from "@/store/slices/table";
+import { validateUser } from "@/context/table";
 
 const User = ({
   data: {
@@ -28,9 +35,24 @@ const User = ({
   selectedData = () => {},
 }) => {
   const className = "border-b border-blue-gray-50 py-3 px-2 text-left",
-    [isValidated, setValidated] = useState(validated),
     dispatch = useDispatch(),
-    newDate = (date) => new Date(date).toString().split("GMT")[0];
+    { adminToken } = useSelector((state) => state.auth),
+    newDate = (date) => new Date(date).toString().split("GMT")[0],
+    firstUpdate = useRef(true);
+
+  // useLayoutEffect(() => {
+  //   if (firstUpdate.current) {
+  //     firstUpdate.current = false;
+  //     return;
+  //   }
+
+  // });
+  // validateUser(_id, isValidated, dispatch, adminToken);
+  // useEffect(() => {
+  //   if (isValidated !== validated) {
+  //   }
+  // }, [isValidated]);
+
   return (
     <tr key={_id}>
       <td className={`${className} pl-5 uppercase`}>
@@ -75,14 +97,18 @@ const User = ({
       <td className={`${className}`}>
         <div className="flex justify-center">
           <Switch
-            checked={isValidated}
+            // checked={isValidated}
+            defaultChecked={validated}
             id={`switch-${_id}`}
-            label={isValidated ? "Ya" : "Tidak"}
+            label={validated ? "Ya" : "Tidak"}
             color="green"
             labelProps={{
               className: "text-blue-gray-400 text-sm",
             }}
-            onChange={() => setValidated(!isValidated)}
+            onChange={(e) => {
+              if (userType === "admin") return;
+              validateUser(_id, e.target.checked, dispatch, adminToken);
+            }}
           />
         </div>
       </td>

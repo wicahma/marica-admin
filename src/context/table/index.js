@@ -21,6 +21,42 @@ export const setValue = (value, data) => {
   }
 };
 
+export const validateUser = async (id, status, dispatch, token) => {
+  dispatch(setLoading(true));
+  const response = await axios
+    .put(
+      `/user/validate/${id}`,
+      { status },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((res) => {
+      dispatch(
+        setAlert({
+          type: "success",
+          message: `User dengan nama ${res.data.data.nama} berhasil di${res.data.data.validated ? "validasi":"un-validasi"}!`,
+          show: true,
+        })
+      );
+      dispatch(userData());
+    })
+    .catch((err) => {
+      dispatch(
+        setAlert({
+          type: "error",
+          message: `User dengan ID-${id.toUpperCase()} gagal divalidasi! siahkan lihat error di konsol`,
+          show: true,
+        })
+      );
+      dispatch(setLoading(false));
+      console.log(err);
+    });
+  return response;
+};
+
 export const deleteUser = async (id, dispatch, token) => {
   dispatch(setLoading(true));
   const response = await axios

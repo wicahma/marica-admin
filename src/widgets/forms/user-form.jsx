@@ -29,7 +29,10 @@ const UserForm = (props) => {
       setFieldValue("id", selectedData._id ?? "");
       setFieldValue("nama", selectedData.nama ?? "");
       setFieldValue("email", selectedData.email ?? "");
-      setFieldValue("lahir", selectedData.lahir.split("T")[0] ?? "");
+      setFieldValue(
+        "lahir",
+        selectedData.lahir && selectedData.lahir.split("T")[0]
+      );
       setFieldValue("phone", selectedData.essentials.phone ?? "");
       setFieldValue("username", selectedData.essentials.username ?? "");
       setFieldValue("address", selectedData.essentials.address ?? "");
