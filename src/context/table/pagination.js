@@ -15,7 +15,7 @@ export const prev = (active, setActive = () => {}) => {
   setActive(active - 1);
 };
 
-export const pageDivider = (data, active) => {
+export const pageDivider = (data) => {
   const limiter = 20;
   const totalPages = Math.ceil(data.length / limiter);
   let divider = [];
@@ -29,5 +29,5 @@ export const pageDivider = (data, active) => {
     divider = [...divider, page];
   }
 
-  return divider;
+  return { data: divider, pages: totalPages };
 };

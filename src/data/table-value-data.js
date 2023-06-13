@@ -1,5 +1,6 @@
 const type = "add";
 export const userValue = {
+  id: "", // not-required in init
   nama: "",
   email: "",
   lahir: "", // not-required in init
@@ -10,6 +11,7 @@ export const userValue = {
 };
 
 export const videoValue = {
+  id: "", // not-required in init
   videoURL: "",
   title: "",
   description: "",
@@ -24,6 +26,7 @@ export const videoValue = {
 };
 
 export const seriesValue = {
+  id: "", // not-required in init
   judul: "",
   deskripsi: "",
   thumbnail: "",
