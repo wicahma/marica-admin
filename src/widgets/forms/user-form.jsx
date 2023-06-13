@@ -7,19 +7,38 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { Form, useFormikContext } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const UserForm = (props) => {
   const {
-    errors,
-    resetForm,
-    isSubmitting,
-    values,
-    touched,
-    setFieldValue,
-    handleBlur,
-    handleChange,
-  } = useFormikContext();
+      errors,
+      resetForm,
+      isSubmitting,
+      values,
+      touched,
+      setFieldValue,
+      handleBlur,
+    } = useFormikContext(),
+    {
+      user: { selectedData },
+    } = useSelector((state) => state.table);
+
+  useEffect(() => {
+    if (Object.keys(selectedData).length > 0) {
+      setFieldValue("id", selectedData._id ?? "");
+      setFieldValue("nama", selectedData.nama ?? "");
+      setFieldValue("email", selectedData.email ?? "");
+      setFieldValue("lahir", selectedData.lahir ?? "");
+      setFieldValue("phone", selectedData.essentials.phone ?? "");
+      setFieldValue("username", selectedData.essentials.username ?? "");
+      setFieldValue("address", selectedData.essentials.address ?? "");
+      setFieldValue("fetchType", "update");
+    } else {
+      resetForm();
+    }
+  }, [selectedData]);
+
   return (
     <div className="flex flex-wrap gap-5">
       <Card className="w-full lg:w-3/5">
@@ -28,9 +47,22 @@ const UserForm = (props) => {
             <div className="col-span-2">
               <Typography variant="h5" className="flex items-center gap-3 ">
                 User Form{" "}
-                <span className="rounded-md bg-red-400 px-2 text-xs font-medium uppercase text-white">
+                <span
+                  className={`rounded-md ${
+                    values.fetchType !== "add"
+                      ? "bg-light-blue-400"
+                      : "bg-red-400"
+                  } px-2 text-xs font-medium uppercase text-white`}
+                >
                   {values.fetchType}
-                </span>
+                </span>{" "}
+                {values.id && (
+                  <span
+                    className={`bg-white-400 rounded-md border border-blue-400 px-2 text-xs font-normal uppercase text-blue-600 shadow-xl`}
+                  >
+                    ID-{values.id}
+                  </span>
+                )}
               </Typography>
             </div>
             <div className="col-span-2 w-full ">
@@ -40,7 +72,7 @@ const UserForm = (props) => {
                 type="text"
                 name="nama"
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={(e) => setFieldValue("nama", e.target.value)}
                 label={errors.nama && touched.nama ? errors.nama : "Nama User"}
                 size="md"
               />
@@ -52,7 +84,7 @@ const UserForm = (props) => {
                 type="text"
                 name="email"
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={(e) => setFieldValue("email", e.target.value)}
                 label={
                   errors.email && touched.email ? errors.email : "Email User"
                 }
@@ -66,7 +98,7 @@ const UserForm = (props) => {
                 type="date"
                 name="lahir"
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={(e) => setFieldValue("lahir", e.target.value)}
                 disabled={values.fetchType === "add" ? true : false}
                 label={
                   errors.lahir && touched.lahir ? errors.lahir : "Tanggal Lahir"
@@ -81,7 +113,7 @@ const UserForm = (props) => {
                 type="text"
                 name="phone"
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={(e) => setFieldValue("phone", e.target.value)}
                 disabled={values.fetchType === "add" ? true : false}
                 label={
                   errors.phone && touched.phone ? errors.phone : "Nomor Telepon"
@@ -96,7 +128,7 @@ const UserForm = (props) => {
                 type="text"
                 name="username"
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={(e) => setFieldValue("username", e.target.value)}
                 disabled={values.fetchType === "add" ? true : false}
                 label={
                   errors.username && touched.username
@@ -136,7 +168,7 @@ const UserForm = (props) => {
                 color="green"
                 type="submit"
               >
-                Buat User
+                {values.fetchType !== "add" ? "Update User" : "Buat User"}
               </Button>
             </div>
           </Form>
@@ -146,7 +178,11 @@ const UserForm = (props) => {
         <CardBody>
           <Typography variant="h5" className="flex items-center gap-3 ">
             User Value
-            <span className="rounded-md bg-red-400 px-2 text-xs font-medium uppercase text-white">
+            <span
+              className={`rounded-md ${
+                values.fetchType !== "add" ? "bg-light-blue-400" : "bg-red-400"
+              } px-2 text-xs font-medium uppercase text-white`}
+            >
               {values.fetchType}
             </span>
           </Typography>

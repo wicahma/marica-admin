@@ -9,25 +9,23 @@ import {
 } from "@material-tailwind/react";
 import { tableTab } from "@/data";
 import MainTable from "@/widgets/tables";
-import { createElement, useEffect } from "react";
+import { createElement, useEffect, useState } from "react";
 import { Formik } from "formik";
-import { getAllDataTable, setValue } from "@/context/table";
-import { useDispatch, useSelector } from "react-redux";
+import { setValue } from "@/context/table";
+import { useSelector } from "react-redux";
 import Pagination from "@/widgets/micros/pagination";
 
 export function Tables() {
-  const dispatch = useDispatch(),
-    { user, video, series } = useSelector((state) => state.table);
-
-  useEffect(() => {
-    return () => {
-      getAllDataTable(dispatch);
-    };
-  }, []);
+  const { user, video, series } = useSelector((state) => state.table),
+    [activePage, setActivePage] = useState({
+      user: 1,
+      video: 1,
+      series: 1,
+    });
 
   return (
     <div className="my-5 flex flex-col">
-      <Tabs value="series">
+      <Tabs value="user">
         <TabsHeader>
           {tableTab.map(({ label, value }) => (
             <Tab
@@ -53,38 +51,73 @@ export function Tables() {
                 >
                   <div className="space-y-10">
                     {createElement(form, {
-                      user,
-                      video,
-                      series,
+                      user: user.data.flat(1),
+                      video: video.data.flat(1),
+                      series: series.data.flat(1),
                     })}
                     <MainTable
                       identifier={value}
                       icon={createElement(icon, {
                         className: "w-6 h-6",
                       })}
-                      tableData={setValue(value, { user, video, series })}
+                      tableData={setValue(value, {
+                        user: user.data,
+                        video: video.data,
+                        series: series.data,
+                      })}
+                      activeIndex={() => {
+                        switch (value.toLowerCase()) {
+                          case "video":
+                            return activePage.video;
+                          case "series":
+                            return activePage.series;
+                          case "user":
+                            return activePage.user;
+                          default:
+                            return 1;
+                        }
+                      }}
                       tableTitle={titles}
                     />
                     <Card>
                       <CardBody className="py-2">
                         <Pagination
                           identifier={value}
-                          data={(data) => {
+                          pages={(data) => {
                             switch (data.toLowerCase()) {
                               case "video":
-                                return video;
+                                return video.pages;
                               case "series":
-                                return series;
+                                return series.pages;
                               case "user":
-                                return user;
+                                return user.pages;
                               default:
                                 return [];
                             }
                           }}
-                          activeIndex={(index) => console.log(index)}
-                          pageData={(data) => {
-                            // console.log(data);
-                            return data;
+                          activeIndex={(index) => {
+                            switch (value.toLowerCase()) {
+                              case "video":
+                                setActivePage((prev) => ({
+                                  ...prev,
+                                  video: index,
+                                }));
+                                break;
+                              case "series":
+                                setActivePage((prev) => ({
+                                  ...prev,
+                                  series: index,
+                                }));
+                                break;
+                              case "user":
+                                setActivePage((prev) => ({
+                                  ...prev,
+                                  user: index,
+                                }));
+                                break;
+                              default:
+                                return;
+                            }
                           }}
                         />
                       </CardBody>

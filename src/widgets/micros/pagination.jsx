@@ -10,20 +10,13 @@ import React, { useEffect, useMemo } from "react";
 
 const Pagination = ({
   identifier,
-  data = () => {},
-  pageData = () => {},
+  pages = () => {},
   activeIndex = () => {},
 }) => {
   const [active, setActive] = React.useState(1);
 
-  const pages = useMemo(() => {
-    return pageData(pageDivider(data(identifier)));
-  }, [data(identifier), active]);
-
   useEffect(() => {
-    return () => {
-      activeIndex(active);
-    };
+    activeIndex(active);
   }, [active]);
 
   return (
@@ -38,7 +31,7 @@ const Pagination = ({
         <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
       </Button>
       <div className="flex items-center gap-2">
-        {pages.map((data, i) => (
+        {[...Array(pages(identifier)).keys()].map((_, i) => (
           <IconButton
             {...getItemProps((i += 1), active, (ind) => setActive(ind))}
           >
@@ -51,7 +44,7 @@ const Pagination = ({
         color="blue-gray"
         className="flex items-center gap-2"
         onClick={() => next(active, (ind) => setActive(ind))}
-        disabled={active === 5}
+        disabled={active === pages(identifier)}
       >
         Next
         <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />

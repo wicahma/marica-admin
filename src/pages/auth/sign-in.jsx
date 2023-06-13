@@ -18,19 +18,16 @@ import { useNavigate } from "react-router-dom";
 
 export function SignIn() {
   const dispatch = useDispatch(),
-    isUserLoggedIn = useSelector((state) => state.auth.adminData),
-    isTokenExist = useSelector((state) => state.auth.adminToken),
+    { adminData, adminToken } = useSelector((state) => state.auth),
     [saveLogin, seaveLogin] = useState(false),
     navigate = useNavigate(),
     [seePassword, setSeePassword] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (isUserLoggedIn && isTokenExist) {
-        navigate("/dashboard/home");
-      }
-    }, 1500);
-  }, [isUserLoggedIn, isTokenExist]);
+    if (adminToken && adminData) {
+      navigate("/dashboard/home");
+    }
+  }, [adminData, adminToken]);
 
   return (
     <>

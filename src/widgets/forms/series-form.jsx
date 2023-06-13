@@ -9,11 +9,11 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { Form, useFormikContext } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Tooltips from "../micros/tooltips";
 import { TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { findBarang } from "@/context/forms/series";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAlert } from "@/store/slices/main";
 
 const SeriesForm = ({ video }) => {
@@ -29,7 +29,23 @@ const SeriesForm = ({ video }) => {
     } = useFormikContext(),
     thumbnailRef = React.useRef(null),
     dispatch = useDispatch(),
-    [filteredVideo, setFilteredVideo] = useState(video);
+    getVideo = useMemo(() => video, [video]),
+    {
+      series: { selectedData },
+    } = useSelector((state) => state.table),
+    [filteredVideo, setFilteredVideo] = useState(getVideo);
+
+  useEffect(() => {
+    if (Object.keys(selectedData).length > 0) {
+      setFieldValue("id", selectedData._id ?? "");
+      setFieldValue("fetchType", "update");
+      setFieldValue("judul", selectedData.judul ?? "");
+      setFieldValue("deskripsi", selectedData.deskripsi ?? "");
+      setFieldValue("dataVideo", selectedData.dataVideo ?? "");
+    } else {
+      resetForm();
+    }
+  }, [selectedData]);
 
   return (
     <div className="flex flex-wrap gap-5 lg:flex-nowrap">
@@ -39,9 +55,22 @@ const SeriesForm = ({ video }) => {
             <div className="col-span-2">
               <Typography variant="h5" className="flex items-center gap-3">
                 Series Form{" "}
-                <span className="rounded-md bg-red-400 px-2 text-xs font-medium uppercase text-white">
+                <span
+                  className={`rounded-md ${
+                    values.fetchType !== "add"
+                      ? "bg-light-blue-400"
+                      : "bg-red-400"
+                  } px-2 text-xs font-medium uppercase text-white`}
+                >
                   {values.fetchType}
-                </span>
+                </span>{" "}
+                {values.id && (
+                  <span
+                    className={`bg-white-400 rounded-md border border-blue-400 px-2 text-xs font-normal uppercase text-blue-600 shadow-xl`}
+                  >
+                    ID-{values.id}
+                  </span>
+                )}
               </Typography>
             </div>
             <div className="col-span-2 w-full">
@@ -124,7 +153,7 @@ const SeriesForm = ({ video }) => {
                   unmount: { y: 25 },
                 }}
                 label={`${
-                  errors.videos && touched.videos ? errors.videos : "ID Barang"
+                  errors.videos && touched.videos ? errors.videos : "ID Video"
                 }`}
                 error={touched.videos && errors.videos ? true : false}
                 onChange={(e) => {
@@ -159,15 +188,26 @@ const SeriesForm = ({ video }) => {
                     )
                   }
                 />
-                {filteredVideo.map(({ _id, title }, i) => (
+                {filteredVideo.length !== 0 ? (
+                  filteredVideo.map(({ _id, title }, i) => (
+                    <Option
+                      value={_id}
+                      key={`${i}-idbarangs`}
+                      className="uppercase"
+                    >
+                      {_id} - {title}
+                    </Option>
+                  ))
+                ) : (
                   <Option
-                    value={_id}
-                    key={`${i}-idbarangs`}
-                    className="uppercase"
+                    value={null}
+                    className="py-5 text-center"
+                    disabled
+                    key={`idbarangs`}
                   >
-                    {_id} - {title}
+                    Tidak ada data video
                   </Option>
-                ))}
+                )}
               </Select>
             </div>
             <div className="col-span-2 flex justify-end gap-5">
@@ -186,7 +226,7 @@ const SeriesForm = ({ video }) => {
                 color="green"
                 type="submit"
               >
-                Buat User
+                {values.fetchType !== "add" ? "Update Series" : "Buat Series"}
               </Button>
             </div>
           </Form>
@@ -196,7 +236,11 @@ const SeriesForm = ({ video }) => {
         <CardBody className="break-all">
           <Typography variant="h5" className="flex items-center gap-3 ">
             Series Value
-            <span className="rounded-md bg-red-400 px-2 text-xs font-medium uppercase text-white">
+            <span
+              className={`rounded-md ${
+                values.fetchType !== "add" ? "bg-light-blue-400" : "bg-red-400"
+              } px-2 text-xs font-medium uppercase text-white`}
+            >
               {values.fetchType}
             </span>
           </Typography>

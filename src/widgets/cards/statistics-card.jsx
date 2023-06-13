@@ -4,6 +4,7 @@ import {
   CardBody,
   CardFooter,
   Typography,
+  Spinner,
 } from "@material-tailwind/react";
 import PropTypes from "prop-types";
 
@@ -22,7 +23,7 @@ export function StatisticsCard({ color, icon, title, value, footer }) {
           {title}
         </Typography>
         <Typography variant="h4" color="blue-gray">
-          {value}
+          {value === "" ? <Spinner /> : value}
         </Typography>
       </CardBody>
       {footer && (

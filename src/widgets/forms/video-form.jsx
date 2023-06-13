@@ -12,6 +12,7 @@ import {
 import { Form, useFormikContext } from "formik";
 import React, { useEffect } from "react";
 import Tooltips from "../micros/tooltips";
+import { useSelector } from "react-redux";
 
 const VideoForm = (props) => {
   const {
@@ -26,7 +27,30 @@ const VideoForm = (props) => {
     } = useFormikContext(),
     disabledInput = true,
     thumbnailRef = React.useRef(null),
+    {
+      video: { selectedData },
+    } = useSelector((state) => state.table),
     quizAttachmentDataRef = React.useRef(null);
+
+  useEffect(() => {
+    if (Object.keys(selectedData).length > 0) {
+      setFieldValue("id", selectedData._id ?? "");
+      setFieldValue("videoURL", selectedData.videoURL ?? "");
+      setFieldValue("type", selectedData.type ?? "");
+      setFieldValue("title", selectedData.title ?? "");
+      setFieldValue("description", selectedData.description ?? "");
+      setFieldValue("fetchType", "update");
+    } else {
+      resetForm();
+    }
+  }, [selectedData]);
+
+  useEffect(() => {
+    if (thumbnailRef.current) {
+      thumbnailRef.current.src = values.thumbnail;
+    }
+  }, [thumbnailRef]);
+
   return (
     <div className="flex flex-wrap gap-5 lg:flex-nowrap">
       <Card className="w-full shrink-0 lg:w-3/5">
@@ -35,9 +59,22 @@ const VideoForm = (props) => {
             <div className="col-span-2">
               <Typography variant="h5" className="flex items-center gap-3">
                 Video Form{" "}
-                <span className="rounded-md bg-red-400 px-2 text-xs font-medium uppercase text-white">
+                <span
+                  className={`rounded-md ${
+                    values.fetchType !== "add"
+                      ? "bg-light-blue-400"
+                      : "bg-red-400"
+                  } px-2 text-xs font-medium uppercase text-white`}
+                >
                   {values.fetchType}
-                </span>
+                </span>{" "}
+                {values.id && (
+                  <span
+                    className={`bg-white-400 rounded-md border border-blue-400 px-2 text-xs font-normal uppercase text-blue-600 shadow-xl`}
+                  >
+                    ID-{values.id}
+                  </span>
+                )}
               </Typography>
             </div>
             <div className="col-span-2 w-full ">
@@ -122,6 +159,7 @@ const VideoForm = (props) => {
                 accept="image/*"
                 ref={thumbnailRef}
                 name="thumbnail"
+                disabled={disabledInput ? true : false}
                 onChange={(e) => setFieldValue("thumbnail", e.target.files)}
                 className="focus:border-primary focus:shadow-te-primary dark:focus:border-primary relative m-0 block max-h-[2.5rem] w-full min-w-0 flex-auto cursor-pointer rounded-lg border border-solid border-blue-gray-200 bg-clip-padding px-3 py-[0.12rem] font-normal leading-[2.15] text-blue-gray-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.12rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-blue-gray-200 file:px-3 file:py-[0.12rem] file:text-blue-gray-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-blue-gray-200 focus:text-blue-gray-700 focus:outline-none dark:border-blue-gray-600 dark:text-blue-gray-200 dark:file:bg-blue-gray-700 dark:file:text-blue-gray-100"
                 id="thumbnail"
@@ -151,9 +189,7 @@ const VideoForm = (props) => {
                   name="quizTimestamp"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  disabled={
-                    values.fetchType === "add" && disabledInput ? true : false
-                  }
+                  disabled={disabledInput ? true : false}
                   label={
                     errors.quizTimestamp && touched.quizTimestamp
                       ? errors.quizTimestamp
@@ -199,9 +235,7 @@ const VideoForm = (props) => {
                   name="quizType"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  disabled={
-                    values.fetchType === "add" && disabledInput ? true : false
-                  }
+                  disabled={disabledInput ? true : false}
                   label={
                     errors.quizType && touched.quizType
                       ? errors.quizType
@@ -227,9 +261,7 @@ const VideoForm = (props) => {
                   name="quizAttachmentType"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  disabled={
-                    values.fetchType === "add" && disabledInput ? true : false
-                  }
+                  disabled={disabledInput ? true : false}
                   label={
                     errors.quizAttachmentType && touched.quizAttachmentType
                       ? errors.quizAttachmentType
@@ -252,9 +284,7 @@ const VideoForm = (props) => {
                   name="QuizData"
                   onBlur={handleBlur}
                   onChange={(e) => setFieldValue("quiz", e.target.value)}
-                  disabled={
-                    values.fetchType === "add" && disabledInput ? true : false
-                  }
+                  disabled={disabledInput ? true : false}
                   label={
                     errors.quiz && touched.quiz ? errors.quiz : "Quiz Data"
                   }
@@ -278,7 +308,7 @@ const VideoForm = (props) => {
                 color="green"
                 type="submit"
               >
-                Buat User
+                {values.fetchType !== "add" ? "Update Video" : "Buat Video"}
               </Button>
             </div>
           </Form>
@@ -288,7 +318,11 @@ const VideoForm = (props) => {
         <CardBody className="break-all">
           <Typography variant="h5" className="flex items-center gap-3 ">
             Video Value
-            <span className="rounded-md bg-red-400 px-2 text-xs font-medium uppercase text-white">
+            <span
+              className={`rounded-md ${
+                values.fetchType !== "add" ? "bg-light-blue-400" : "bg-red-400"
+              } px-2 text-xs font-medium uppercase text-white`}
+            >
               {values.fetchType}
             </span>
           </Typography>
@@ -300,21 +334,24 @@ const VideoForm = (props) => {
           </div>
           <div className="mt-3 rounded-xl border border-blue-gray-300 px-3 py-1">
             <p>Thumbnail - {values.thumbnail[0] && values.thumbnail[0].name}</p>
-            <a
-              href={
-                values.thumbnail[0] && URL.createObjectURL(values.thumbnail[0])
-              }
-              target="_blank"
-            >
-              <img
-                src={
+            {values.fetchType !== "add" && (
+              <a
+                href={
                   values.thumbnail[0] &&
                   URL.createObjectURL(values.thumbnail[0])
                 }
-                className="mb-2 w-full rounded-lg"
-                alt={values.thumbnail[0] && values.thumbnail[0].name}
-              />
-            </a>
+                target="_blank"
+              >
+                <img
+                  src={
+                    values.thumbnail[0] &&
+                    URL.createObjectURL(values.thumbnail[0])
+                  }
+                  className="mb-2 w-full rounded-lg"
+                  alt={values.thumbnail[0] && values.thumbnail[0].name}
+                />
+              </a>
+            )}
           </div>
           <Tooltips message={"Fitur sedang dinonaktifkan untuk saat ini"}>
             <div
