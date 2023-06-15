@@ -1,9 +1,10 @@
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, PhotoIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { Button, Switch, Typography } from "@material-tailwind/react";
 import React, { useState } from "react";
 import Tooltips from "../micros/tooltips";
 import { setSelectedData } from "@/store/slices/table";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { activateSeries, submitHandler } from "@/context/table";
 
 const Series = ({
   data: {
@@ -22,6 +23,7 @@ const Series = ({
   const className = "border-b border-blue-gray-50 py-3 px-2 text-left",
     [isActive, setActive] = useState(active),
     dispatch = useDispatch(),
+    { adminToken } = useSelector((state) => state.auth),
     newDate = (date) => new Date(date).toString().split("GMT")[0];
 
   return (
@@ -42,8 +44,31 @@ const Series = ({
         </div>
       </td>
       <td className={`${className}`}>
-        <div className="flex items-center justify-center">
-          <Typography variant="small">{thumbnail}</Typography>
+        <div className="flex items-center justify-center gap-3">
+          <Tooltips message={`${thumbnail} | Lihat Thumbnail`}>
+            <Button
+              onClick={() =>
+                dispatch(
+                  setSelectedData({
+                    type: "series",
+                    data: {
+                      _id,
+                      judul,
+                      deskripsi,
+                      thumbnail,
+                      active,
+                      videos: dataVideo,
+                      fetchType: "update-image",
+                    },
+                  })
+                )
+              }
+              className="rounded-full p-2"
+              color="light-green"
+            >
+              <PhotoIcon className="aspect-square h-4" />
+            </Button>
+          </Tooltips>
         </div>
       </td>
       <td className={`${className}`}>
@@ -56,7 +81,21 @@ const Series = ({
             labelProps={{
               className: "text-blue-gray-400 text-sm",
             }}
-            onChange={() => setActive(!isActive)}
+            onChange={async (e) => {
+              setActive(e.target.checked);
+              await activateSeries(
+                _id,
+                {
+                  judul,
+                  deskripsi,
+                  thumbnail,
+                  active: e.target.checked,
+                  videos: dataVideo,
+                },
+                dispatch,
+                adminToken
+              );
+            }}
           />
         </div>
       </td>
@@ -98,8 +137,9 @@ const Series = ({
                       deskripsi,
                       thumbnail,
                       active,
-                      dataVideo,
+                      videos: dataVideo,
                       createdAt,
+                      fetchType: "update",
                     },
                   })
                 )

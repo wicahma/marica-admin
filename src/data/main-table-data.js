@@ -47,7 +47,6 @@ export const tableTab = [
       "URL Video",
       "Thumbnail",
       "Tipe Video",
-      "Status",
       "Jumlah Vote",
     ],
     initValue: videoValue,

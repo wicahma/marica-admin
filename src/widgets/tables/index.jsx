@@ -1,18 +1,20 @@
 import {
   Avatar,
+  Button,
   Card,
   CardBody,
   CardHeader,
-  Chip,
+  Input,
   Typography,
 } from "@material-tailwind/react";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import User from "./user-table";
 import Video from "./video-table";
 import Series from "./series-table";
 import EssentialDialog from "../Dialog/essential-dialog";
 import MainDialog from "../Dialog/main-dialog";
-import { set } from "lodash";
+import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
+// import { filterData } from "@/context/table";
 
 const MainTable = ({
   identifier,
@@ -22,26 +24,59 @@ const MainTable = ({
   activeIndex = () => {},
 }) => {
   const [essentials, setEssentials] = useState({}),
-    savedData = useMemo(() => tableData.flat(1), [tableData]),
-    [data, setData] = useState(savedData),
+    // [dataNew, setData] = useState(tableData),
     [open, setOpen] = useState(false),
     [selectedData, setSelectedData] = useState({}),
+    // [searchValue, setSearchValue] = useState(""),
     handleOpen = () => setOpen(!open);
 
   const [deleteDialog, setDeleteDialog] = useState(false),
     handleDeleteDialog = () => setDeleteDialog(!deleteDialog);
+
+  // useEffect(() => {
+  //   if (searchValue === "") {
+  //     setData(tableData);
+  //   } else {
+  //     filterData({
+  //       input: searchValue,
+  //       data: tableData.flat(1),
+  //       identifier
+  //     });
+  //   }
+  // }, [searchValue, tableData]);
 
   return (
     <Card>
       <CardHeader
         variant="gradient"
         color="light-blue"
-        className="mb-8 flex items-center justify-start gap-3 p-6 capitalize"
+        className="mb-8 flex items-center justify-between gap-3 p-6 capitalize"
       >
-        {icon}
-        <Typography variant="h5" color="white">
-          Table {identifier}
-        </Typography>
+        <div className="flex gap-3">
+          {icon}
+          <Typography variant="h5" color="white">
+            Table {identifier}
+          </Typography>
+        </div>
+        {/* <div className="flex items-center gap-3 rounded-xl bg-white px-3 py-2">
+          <Input
+            value={searchValue}
+            type="text"
+            name="email"
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+            }}
+            label={"Cari Data"}
+            size="md"
+          />
+          <Button
+            type="button"
+            className="
+          aspect-square w-11 p-1"
+          >
+            <MagnifyingGlassCircleIcon className="m-0 aspect-square w-full p-0" />
+          </Button>
+        </div> */}
       </CardHeader>
       <CardBody className="w-full overflow-x-scroll px-0 pt-0 pb-2">
         <table className="w-full min-w-[640px] table-auto">
@@ -74,7 +109,6 @@ const MainTable = ({
             </tr>
           </thead>
           <tbody>
-            {/* {tableData[activeIndex]} */}
             {tableData.length !== 0 ? (
               tableData[activeIndex() - 1].map((value, key) => {
                 // NOTE - Mapping Table Data per row

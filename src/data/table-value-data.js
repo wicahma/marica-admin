@@ -16,7 +16,7 @@ export const videoValue = {
   videoURL: "",
   title: "",
   description: "",
-  thumbnail: [], // files validation
+  thumbnail: {}, // files validation
   type: "", // paid or free
   quizTimestamp: "", // not-required in init
   quizType: "", // not-required in init // pilihanGanda, fillTheBlank, reArrange
@@ -30,7 +30,7 @@ export const seriesValue = {
   id: "", // not-required in init
   judul: "",
   deskripsi: "",
-  thumbnail: "",
+  thumbnail: {},
   active: false, // not-required in init // true or false
   videos: [], // not-required in init // array of video id
   fetchType: type,

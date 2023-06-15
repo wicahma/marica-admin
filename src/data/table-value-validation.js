@@ -64,18 +64,27 @@ export const videoValidation = Yup.object().shape({
   description: Yup.string()
     .notRequired()
     .max(2000, "Deskripsi tidak boleh lebih dari 2000 karakter"),
-  thumbnail: Yup.mixed()
-    .required("Thumbnail harus diisi")
-    .test(
-      "file-type",
-      "File thumbnail harus berupa gambar & wajib diisi",
-      (value) => {
-        return value instanceof File && value.type.startsWith("image");
-      }
-    )
-    .test("files-size", "Ukuran file tidak boleh lebih dari 5Mb", (value) => {
-      return value && value.size <= 1_000_000 * 5;
-    }),
+  thumbnail: Yup.mixed().when("fetchType", {
+    is: (data) => data === "create" || data === "update-image",
+    then: (schema) =>
+      schema
+        .required("Thumbnail harus diisi")
+        .test(
+          "file-type",
+          "File thumbnail harus berupa gambar & wajib diisi",
+          (value) => {
+            return value instanceof File && value.type.startsWith("image");
+          }
+        )
+        .test(
+          "files-size",
+          "Ukuran file tidak boleh lebih dari 5Mb",
+          (value) => {
+            return value && value.size <= 1_000_000 * 5;
+          }
+        ),
+    otherwise: (schema) => schema.notRequired(),
+  }),
   type: Yup.string().required("Tipe video harus diisi"),
   quizTimestamp: Yup.number()
     .typeError("Masukkan timestamp dengan benar")
@@ -90,7 +99,14 @@ export const videoValidation = Yup.object().shape({
       schema
         .notRequired()
         .test("enum-type", "Tipe kuis tidak valid", (value) => {
-          const enumType = ["pilihanGanda", "fillTheBlank", "reArrange", ""];
+          console.log(value);
+          const enumType = [
+            "pilihanGanda",
+            "fillTheBlank",
+            "reArrange",
+            "",
+            undefined,
+          ];
           return enumType.includes(value);
         }),
     otherwise: (schema) => schema.notRequired(),
@@ -116,8 +132,27 @@ export const videoValidation = Yup.object().shape({
 export const seriesValidation = Yup.object().shape({
   judul: Yup.string().required("Judul harus diisi"),
   deskripsi: Yup.string().required("Deskripsi harus diisi"),
-  //TODO - Change validation to validate file
-  thumbnail: Yup.string().required("Thumbnail harus diisi"),
+  thumbnail: Yup.mixed().when("fetchType", {
+    is: (data) => data === "create" || data === "update-image",
+    then: (schema) =>
+      schema
+        .required("Thumbnail harus diisi")
+        .test(
+          "file-type",
+          "File thumbnail harus berupa gambar & wajib diisi",
+          (value) => {
+            return value instanceof File && value.type.startsWith("image");
+          }
+        )
+        .test(
+          "files-size",
+          "Ukuran file tidak boleh lebih dari 5Mb",
+          (value) => {
+            return value && value.size <= 1_000_000 * 5;
+          }
+        ),
+    otherwise: (schema) => schema.notRequired(),
+  }),
   active: Yup.boolean().when("fetchType", {
     is: "update",
     then: (schema) => schema.required("Status harus diisi"),

@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardBody,
+  Chip,
   Input,
   Option,
   Select,
@@ -34,12 +35,17 @@ const VideoForm = (props) => {
 
   useEffect(() => {
     if (Object.keys(selectedData).length > 0) {
+      resetForm();
       setFieldValue("id", selectedData._id ?? "");
       setFieldValue("videoURL", selectedData.videoURL ?? "");
       setFieldValue("type", selectedData.type ?? "");
       setFieldValue("title", selectedData.title ?? "");
       setFieldValue("description", selectedData.description ?? "");
-      setFieldValue("fetchType", "update");
+      setFieldValue("fetchType", selectedData.fetchType ?? "");
+      setFieldValue(
+        "thumbnail",
+        selectedData.fetchType === "update-image" && selectedData.thumbnail
+      );
     } else {
       resetForm();
     }
@@ -83,6 +89,7 @@ const VideoForm = (props) => {
                 error={errors.videoURL && touched.videoURL ? true : false}
                 type="text"
                 name="videoURL"
+                disabled={values.fetchType === "update-image" ? true : false}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 label={
@@ -99,6 +106,7 @@ const VideoForm = (props) => {
                 error={errors.title && touched.title ? true : false}
                 type="text"
                 name="title"
+                disabled={values.fetchType === "update-image" ? true : false}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 label={errors.title && touched.title ? errors.title : "Judul"}
@@ -110,6 +118,7 @@ const VideoForm = (props) => {
                 value={values.description}
                 error={errors.description && touched.description ? true : false}
                 name="description"
+                disabled={values.fetchType === "update-image" ? true : false}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 label={
@@ -183,6 +192,7 @@ const VideoForm = (props) => {
             <div className="col-span-2 w-full md:col-span-1">
               <Select
                 value={values.type}
+                disabled={values.fetchType === "update-image" ? true : false}
                 error={errors.type && touched.type ? true : false}
                 name="type"
                 onChange={(e) => setFieldValue("type", e)}
@@ -328,7 +338,11 @@ const VideoForm = (props) => {
                 color="green"
                 type="submit"
               >
-                {values.fetchType !== "create" ? "Update Video" : "Buat Video"}
+                {values.fetchType !== "create"
+                  ? values.fetchType.includes("update-image")
+                    ? "Update Gambar"
+                    : "Update Video"
+                  : "Buat Video"}
               </Button>
             </div>
           </Form>
@@ -355,24 +369,63 @@ const VideoForm = (props) => {
             <p>Deskripsi - {values.description}</p>
           </div>
           <div className="mt-3 rounded-xl border border-blue-gray-300 px-3 py-1">
-            <p>Thumbnail - {values.thumbnail[0] && values.thumbnail[0].name}</p>
+            <p>
+              Thumbnail -{" "}
+              {values.thumbnail instanceof File
+                ? values.thumbnail.name
+                : `${JSON.stringify(values.thumbnail)}`}
+            </p>
             {values.fetchType === "create" && (
               <a
                 href={
-                  values.thumbnail[0] &&
-                  URL.createObjectURL(values.thumbnail[0])
+                  (values.thumbnail instanceof File &&
+                    URL.createObjectURL(values.thumbnail)) ||
+                  ""
                 }
                 target="_blank"
               >
                 <img
                   src={
-                    values.thumbnail[0] &&
-                    URL.createObjectURL(values.thumbnail[0])
+                    (values.thumbnail instanceof File &&
+                      URL.createObjectURL(values.thumbnail)) ||
+                    ""
                   }
                   className="mb-2 w-full rounded-lg"
-                  alt={values.thumbnail[0] && values.thumbnail[0].name}
+                  alt={values.thumbnail.name}
                 />
               </a>
+            )}
+            {values.fetchType === "update-image" && (
+              <>
+                <Chip
+                  color="light-blue"
+                  variant="outlined"
+                  value={
+                    values.thumbnail instanceof File
+                      ? "Gambar baru"
+                      : "Gambar lama"
+                  }
+                  className="my-3 py-1 text-center"
+                />
+                <a
+                  href={
+                    values.thumbnail instanceof File
+                      ? URL.createObjectURL(values.thumbnail)
+                      : `http://localhost:4000/images/${values.thumbnail}`
+                  }
+                  target="_blank"
+                >
+                  <img
+                    src={
+                      values.thumbnail instanceof File
+                        ? URL.createObjectURL(values.thumbnail)
+                        : `http://localhost:4000/images/${values.thumbnail}`
+                    }
+                    className="mb-2 w-full rounded-lg"
+                    alt={values.thumbnail.name}
+                  />
+                </a>
+              </>
             )}
           </div>
           <Tooltips message={"Fitur sedang dinonaktifkan untuk saat ini"}>

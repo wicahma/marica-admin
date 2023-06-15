@@ -15,14 +15,12 @@ const loadState = () => {
     if (serializedState === null) {
       return {
         auth: authInitialState,
-        table: tableInitialState,
       };
     }
     return JSON.parse(serializedState);
   } catch (e) {
     return {
       auth: authInitialState,
-      table: tableInitialState,
     };
   }
 };
@@ -41,16 +39,16 @@ const saveState = (state) => {
 const persistedState = loadState();
 
 const rootReducer = createReducer(
-  // {
-  //   auth: persistedState.auth,
-  //   main: mainInitialState,
-  //   table: persistedState.table,
-  // },
   {
-    auth: authInitialState,
+    auth: persistedState.auth,
     main: mainInitialState,
     table: tableInitialState,
   },
+  // {
+  //   auth: authInitialState,
+  //   main: mainInitialState,
+  //   table: tableInitialState,
+  // },
   (builder) => {
     builderContext(builder);
 
@@ -78,8 +76,8 @@ setupListeners(store.dispatch);
 store.subscribe(
   throttle(() => {
     console.log("Data saved to local storage!");
-    const { auth, table } = store.getState();
-    saveState({ auth, table });
+    const { auth } = store.getState();
+    saveState({ auth });
   }, 1000)
 );
 

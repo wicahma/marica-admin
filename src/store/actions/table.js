@@ -4,7 +4,6 @@ import axios from "axios";
 export const userData = createAsyncThunk(
   "fetch/get/user",
   async (value, thunkAPI) => {
-    // console.log(thunkAPI);
     const { getState, dispatch } = thunkAPI;
     const res = await axios({
       method: "GET",

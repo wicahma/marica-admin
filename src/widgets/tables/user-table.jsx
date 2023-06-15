@@ -37,6 +37,7 @@ const User = ({
   const className = "border-b border-blue-gray-50 py-3 px-2 text-left",
     dispatch = useDispatch(),
     { adminToken } = useSelector((state) => state.auth),
+    [isValidated, setValidated] = useState(validated),
     newDate = (date) => new Date(date).toString().split("GMT")[0],
     firstUpdate = useRef(true);
 
@@ -98,7 +99,7 @@ const User = ({
         <div className="flex justify-center">
           <Switch
             // checked={isValidated}
-            defaultChecked={validated}
+            defaultChecked={isValidated}
             id={`switch-${_id}`}
             label={validated ? "Ya" : "Tidak"}
             color="green"
@@ -107,6 +108,7 @@ const User = ({
             }}
             onChange={(e) => {
               if (userType === "admin") return;
+              setValidated(e.target.checked);
               validateUser(_id, e.target.checked, dispatch, adminToken);
             }}
           />
