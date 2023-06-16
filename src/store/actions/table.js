@@ -67,9 +67,25 @@ export const getBalance = createAsyncThunk(
   }
 );
 
+export const paymentData = createAsyncThunk(
+  "fetch/get/payment",
+  async (value, thunkAPI) => {
+    const { getState, dispatch } = thunkAPI;
+    const res = await axios({
+      method: "GET",
+      url: "/payment",
+      headers: {
+        Authorization: `Bearer ${getState().auth.adminToken}`,
+      },
+    });
+    return res.data;
+  }
+);
+
 export default {
   userData,
   videoData,
   seriesData,
   getBalance,
+  paymentData,
 };

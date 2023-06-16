@@ -7,14 +7,16 @@ import {
   Input,
   Typography,
 } from "@material-tailwind/react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import User from "./user-table";
 import Video from "./video-table";
 import Series from "./series-table";
 import EssentialDialog from "../Dialog/essential-dialog";
 import MainDialog from "../Dialog/main-dialog";
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
-// import { filterData } from "@/context/table";
+import Tooltips from "../micros/tooltips";
+import { filterData } from "@/context/table";
+import Payment from "./payment-table";
 
 const MainTable = ({
   identifier,
@@ -24,26 +26,26 @@ const MainTable = ({
   activeIndex = () => {},
 }) => {
   const [essentials, setEssentials] = useState({}),
-    // [dataNew, setData] = useState(tableData),
     [open, setOpen] = useState(false),
     [selectedData, setSelectedData] = useState({}),
-    // [searchValue, setSearchValue] = useState(""),
+    [searchValue, setSearchValue] = useState(""),
+    [triggerValue, setTriggerValue] = useState(false),
     handleOpen = () => setOpen(!open);
 
   const [deleteDialog, setDeleteDialog] = useState(false),
     handleDeleteDialog = () => setDeleteDialog(!deleteDialog);
 
-  // useEffect(() => {
-  //   if (searchValue === "") {
-  //     setData(tableData);
-  //   } else {
-  //     filterData({
-  //       input: searchValue,
-  //       data: tableData.flat(1),
-  //       identifier
-  //     });
-  //   }
-  // }, [searchValue, tableData]);
+  const newData = useMemo(() => {
+    let data = tableData[activeIndex() - 1];
+    if (searchValue !== "") {
+      data = filterData({
+        input: searchValue,
+        data: tableData.flat(1),
+        identifier,
+      });
+    }
+    return data;
+  }, [activeIndex(), triggerValue, tableData]);
 
   return (
     <Card>
@@ -58,25 +60,37 @@ const MainTable = ({
             Table {identifier}
           </Typography>
         </div>
-        {/* <div className="flex items-center gap-3 rounded-xl bg-white px-3 py-2">
-          <Input
-            value={searchValue}
-            type="text"
-            name="email"
-            onChange={(e) => {
-              setSearchValue(e.target.value);
-            }}
-            label={"Cari Data"}
-            size="md"
-          />
-          <Button
-            type="button"
-            className="
-          aspect-square w-11 p-1"
+        <div className="flex items-center gap-3 rounded-xl bg-white px-3 py-2">
+          <Tooltips
+            message={"Tekan Enter untuk mencari / klik tombol disamping"}
           >
-            <MagnifyingGlassCircleIcon className="m-0 aspect-square w-full p-0" />
-          </Button>
-        </div> */}
+            <Input
+              value={searchValue}
+              type="text"
+              name="email"
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+              }}
+              label={"Cari Data"}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setTriggerValue(!triggerValue);
+                }
+              }}
+              size="md"
+            />
+          </Tooltips>
+          <Tooltips message={"Cari data"}>
+            <Button
+              type="button"
+              onClick={() => setTriggerValue(!triggerValue)}
+              className="
+            aspect-square w-11 p-1"
+            >
+              <MagnifyingGlassCircleIcon className="m-0 aspect-square w-full p-0" />
+            </Button>
+          </Tooltips>
+        </div>
       </CardHeader>
       <CardBody className="w-full overflow-x-scroll px-0 pt-0 pb-2">
         <table className="w-full min-w-[640px] table-auto">
@@ -110,7 +124,7 @@ const MainTable = ({
           </thead>
           <tbody>
             {tableData.length !== 0 ? (
-              tableData[activeIndex() - 1].map((value, key) => {
+              newData.map((value, key) => {
                 // NOTE - Mapping Table Data per row
                 switch (identifier) {
                   case "user":
@@ -169,6 +183,8 @@ const MainTable = ({
                         }}
                       />
                     );
+                  case "payment":
+                    return <Payment key={key} data={value} />;
                   default:
                     return <tr>Mapping belum diatur!</tr>;
                 }

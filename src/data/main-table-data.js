@@ -76,11 +76,8 @@ export const tableTab = [
 
 export const paymentTable = {
   icon: CurrencyDollarIcon,
-  value: "series",
-  data: authorsTableData,
-  titles: ["author", "function", "status", "employed", ""],
-  initValue: {},
-  validations: {},
+  value: "payment",
+  titles: ["ID", "Event", "Data", "Tanggal pembuatan", ""],
 };
 
 export default tableTab;

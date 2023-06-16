@@ -10,7 +10,6 @@ const Tooltips = ({
 }) => {
   return (
     <Tooltip
-      interactive
       content={
         <div className={`${enable ? "flex" : "hidden"} gap-3`}>
           <InformationCircleIcon className="aspect-square w-5" />

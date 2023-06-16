@@ -1,10 +1,16 @@
-import axios, { seriesData, userData, videoData } from "@/store/actions";
+import axios, {
+  paymentData,
+  seriesData,
+  userData,
+  videoData,
+} from "@/store/actions";
 import { setAlert, setLoading } from "@/store/slices/main";
 
 export const getAllDataTable = async (dispatch) => {
   await dispatch(userData());
   await dispatch(videoData());
   await dispatch(seriesData());
+  await dispatch(paymentData());
 };
 
 export const setValue = (value, data) => {
@@ -23,6 +29,7 @@ export const setValue = (value, data) => {
 
 export const activateSeries = async (id, data, dispatch, token) => {
   dispatch(setLoading(true));
+  console.log(data);
   const response = await axios
     .put(`/series/${id}`, data, {
       headers: {
@@ -30,6 +37,7 @@ export const activateSeries = async (id, data, dispatch, token) => {
       },
     })
     .then((res) => {
+      console.log(res);
       dispatch(
         setAlert({
           type: "success",
@@ -52,6 +60,7 @@ export const activateSeries = async (id, data, dispatch, token) => {
           show: true,
         })
       );
+      dispatch(setLoading(false));
     });
   return response;
 };
@@ -538,24 +547,57 @@ export const submitHandler = async ({
   }
 };
 
-// const userFilter = (input, data) => {
-//   // console.log(data);
-//   // const filteredData = data.filter((user) => {
-//   //   user.name.toLowerCase().includes(input.toLowerCase()) ||
-//   //     user.email.toLowerCase().includes(input.toLowerCase());
-//   // });
-//   return data;
-// };
+const userFilter = (input, data) => {
+  const filteredData = data.filter((user) => {
+    return (
+      user.nama.toLowerCase().includes(input.toLowerCase()) ||
+      user.email.toLowerCase().includes(input.toLowerCase()) ||
+      user.essentials.username.toLowerCase().includes(input.toLowerCase()) ||
+      user._id.toLowerCase().includes(input.toLowerCase())
+    );
+  });
+  return filteredData;
+};
 
-// export const filterData = ({ input, identifier, data }) => {
-//   switch (identifier) {
-//     case "user":
-//       return userFilter(input, data);
+const videoFilter = (input, data) => {
+  const filteredData = data.filter((video) => {
+    return (
+      video.title.toLowerCase().includes(input.toLowerCase()) ||
+      video._id.toLowerCase().includes(input.toLowerCase()) ||
+      video.description.toLowerCase().includes(input.toLowerCase()) ||
+      video.type.toLowerCase().includes(input.toLowerCase())
+    );
+  });
+  return filteredData;
+};
 
-//     case "video":
-//       return data;
+const seriesFilter = (input, data) => {
+  const filteredData = data.filter((series) => {
+    return (
+      series.judul.toLowerCase().includes(input.toLowerCase()) ||
+      series._id.toLowerCase().includes(input.toLowerCase()) ||
+      series.deskripsi.toLowerCase().includes(input.toLowerCase())
+    );
+  });
+  return filteredData;
+};
 
-//     case "series":
-//       return data;
-//   }
-// };
+const paymentFilter = (input, data) => {
+  const filteredData = data.filter((payment) => {
+    return payment._id.toLowerCase().includes(input.toLowerCase());
+  });
+  return filteredData;
+};
+
+export const filterData = ({ input, identifier, data }) => {
+  switch (identifier) {
+    case "user":
+      return userFilter(input, data);
+    case "video":
+      return videoFilter(input, data);
+    case "series":
+      return seriesFilter(input, data);
+    case "payment":
+      return paymentFilter(input, data);
+  }
+};

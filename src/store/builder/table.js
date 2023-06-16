@@ -1,5 +1,11 @@
 import { pageDivider } from "@/context/table/pagination";
-import { getBalance, seriesData, userData, videoData } from "../actions";
+import {
+  getBalance,
+  paymentData,
+  seriesData,
+  userData,
+  videoData,
+} from "../actions";
 
 export const tableBuilder = (builder) => {
   builder
@@ -58,6 +64,28 @@ export const tableBuilder = (builder) => {
       state.table.series.pages = pagesData.pages;
     })
     .addCase(seriesData.rejected, (state, action) => {
+      state.main.loading = false;
+      state.main.alert = {
+        type: "error",
+        message: `Fetching data gagal, ${action.error.message}!`,
+        show: true,
+      };
+      console.log("state", state);
+      console.log("action", action);
+    });
+
+  builder
+    .addCase(paymentData.pending, (state, action) => {
+      state.main.loading = true;
+      console.log("action pending", action);
+    })
+    .addCase(paymentData.fulfilled, (state, action) => {
+      state.main.loading = false;
+      const pagesData = pageDivider(action.payload.data);
+      state.table.payment.data = pagesData.data;
+      state.table.payment.pages = pagesData.pages;
+    })
+    .addCase(paymentData.rejected, (state, action) => {
       state.main.loading = false;
       state.main.alert = {
         type: "error",

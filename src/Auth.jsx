@@ -31,18 +31,13 @@ const useStorage = (keyName, defaultValue) => {
 };
 
 export const AuthProvider = ({ children }) => {
-  // const [user, setUser] = useStorage("state", {});
   const userData = useSelector((state) => state.auth.adminData),
-    // dispatch = useDispatch(),
     [user, setUser] = useState(userData);
 
   useEffect(() => {
     setUser(userData);
   }, [userData]);
 
-  // if (Object.keys(userData).length === 0) {
-  //   dispatch(setAlert({ show: true, type: "warning", message: "Silahkan login terlebih dahulu!" }));
-  // }
   const navigate = useNavigate(),
     login = async (data) => {
       setUser(data);

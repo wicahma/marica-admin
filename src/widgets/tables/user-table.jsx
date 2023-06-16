@@ -37,25 +37,11 @@ const User = ({
   const className = "border-b border-blue-gray-50 py-3 px-2 text-left",
     dispatch = useDispatch(),
     { adminToken } = useSelector((state) => state.auth),
-    [isValidated, setValidated] = useState(validated),
-    newDate = (date) => new Date(date).toString().split("GMT")[0],
-    firstUpdate = useRef(true);
-
-  // useLayoutEffect(() => {
-  //   if (firstUpdate.current) {
-  //     firstUpdate.current = false;
-  //     return;
-  //   }
-
-  // });
-  // validateUser(_id, isValidated, dispatch, adminToken);
-  // useEffect(() => {
-  //   if (isValidated !== validated) {
-  //   }
-  // }, [isValidated]);
+    // [isValidated, setValidated] = useState(validated),
+    newDate = (date) => new Date(date).toString().split("GMT")[0];
 
   return (
-    <tr key={_id}>
+    <tr id={`row-${_id}-${nama}`} key={_id}>
       <td className={`${className} pl-5 uppercase`}>
         <Typography variant="small" className="font-medium">
           {_id}
@@ -98,8 +84,7 @@ const User = ({
       <td className={`${className}`}>
         <div className="flex justify-center">
           <Switch
-            // checked={isValidated}
-            defaultChecked={isValidated}
+            defaultChecked={validated}
             id={`switch-${_id}`}
             label={validated ? "Ya" : "Tidak"}
             color="green"
@@ -107,8 +92,9 @@ const User = ({
               className: "text-blue-gray-400 text-sm",
             }}
             onChange={(e) => {
+              e.stopPropagation();
               if (userType === "admin") return;
-              setValidated(e.target.checked);
+              // setValidated(e.target.checked);
               validateUser(_id, e.target.checked, dispatch, adminToken);
             }}
           />

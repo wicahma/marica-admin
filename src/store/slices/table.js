@@ -31,6 +31,8 @@ export const tableInitialState = {
   },
   payment: {
     balance: "",
+    data: [],
+    pages: 1,
   },
 };
 
@@ -46,8 +48,8 @@ export const tableSlice = createSlice({
       state.video.data = action.payload;
     },
 
-    setPayment: (state, action) => {
-      state.payment = action.payload;
+    setPaymentData: (state, action) => {
+      state.payment.data = action.payload;
     },
 
     setSeries: (state, action) => {
