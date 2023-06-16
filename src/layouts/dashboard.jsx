@@ -25,10 +25,8 @@ export function Dashboard() {
     { sidenavType } = controller;
 
   useEffect(() => {
-    return () => {
-      getAllDataTable(dispatcher);
-      dispatcher(getBalance());
-    };
+    getAllDataTable(dispatcher);
+    dispatcher(getBalance());
   }, []);
 
   return (
