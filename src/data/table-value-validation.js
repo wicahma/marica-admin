@@ -99,7 +99,6 @@ export const videoValidation = Yup.object().shape({
       schema
         .notRequired()
         .test("enum-type", "Tipe kuis tidak valid", (value) => {
-          console.log(value);
           const enumType = [
             "pilihanGanda",
             "fillTheBlank",

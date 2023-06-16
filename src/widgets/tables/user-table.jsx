@@ -1,20 +1,13 @@
+import { validateUser } from "@/context/table";
+import { setSelectedData } from "@/store/slices/table";
 import {
   PencilIcon,
   PencilSquareIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
 import { Button, Chip, Switch, Typography } from "@material-tailwind/react";
-import React, {
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import Tooltips from "../micros/tooltips";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedData } from "@/store/slices/table";
-import { validateUser } from "@/context/table";
+import Tooltips from "../micros/tooltips";
 
 const User = ({
   data: {
@@ -37,7 +30,6 @@ const User = ({
   const className = "border-b border-blue-gray-50 py-3 px-2 text-left",
     dispatch = useDispatch(),
     { adminToken } = useSelector((state) => state.auth),
-    // [isValidated, setValidated] = useState(validated),
     newDate = (date) => new Date(date).toString().split("GMT")[0];
 
   return (
@@ -94,7 +86,6 @@ const User = ({
             onChange={(e) => {
               e.stopPropagation();
               if (userType === "admin") return;
-              // setValidated(e.target.checked);
               validateUser(_id, e.target.checked, dispatch, adminToken);
             }}
           />

@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
-  Button,
-  IconButton,
-  Switch,
-  Typography,
-  Chip,
-} from "@material-tailwind/react";
-import {
-  useMaterialTailwindController,
+  setFixedNavbar,
   setOpenConfigurator,
   setSidenavColor,
   setSidenavType,
-  setFixedNavbar,
+  useMaterialTailwindController,
 } from "@/context";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  Button,
+  Chip,
+  IconButton,
+  Switch,
+  Typography,
+} from "@material-tailwind/react";
+import { useEffect, useState } from "react";
 
 function formatNumber(number, decPlaces) {
   decPlaces = Math.pow(10, decPlaces);

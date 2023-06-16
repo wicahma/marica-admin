@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { authLogin } from "../actions";
-import { setAlert } from "./main";
 
 export const authInitialState = {
   adminData: {},
@@ -12,7 +10,6 @@ export const authSlice = createSlice({
   initialState: authInitialState,
   reducers: {
     setAdminData: (state, action) => {
-      console.log("state", state);
       state.adminData = action.payload;
     },
 

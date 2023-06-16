@@ -12,8 +12,8 @@ import {
 } from "@material-tailwind/react";
 import { Form, useFormikContext } from "formik";
 import React, { useEffect } from "react";
-import Tooltips from "../micros/tooltips";
 import { useSelector } from "react-redux";
+import Tooltips from "../micros/tooltips";
 
 const VideoForm = (props) => {
   const {
@@ -181,7 +181,6 @@ const VideoForm = (props) => {
                   name="thumbnail"
                   onChange={(e) => {
                     setFieldValue("thumbnail", e.target.files[0]);
-                    console.log(e.target.files[0]);
                   }}
                   className="focus:border-primary focus:shadow-te-primary dark:focus:border-primary relative m-0 block max-h-[2.5rem] w-full min-w-0 flex-auto cursor-pointer rounded-lg border border-solid border-blue-gray-200 bg-clip-padding px-3 py-[0.12rem] font-normal leading-[2.15] text-blue-gray-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.12rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-blue-gray-200 file:px-3 file:py-[0.12rem] file:text-blue-gray-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-blue-gray-200 focus:text-blue-gray-700 focus:outline-none dark:border-blue-gray-600 dark:text-blue-gray-200 dark:file:bg-blue-gray-700 dark:file:text-blue-gray-100"
                   id="thumbnail"

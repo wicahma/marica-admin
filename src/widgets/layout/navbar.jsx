@@ -1,14 +1,14 @@
-import React, { cloneElement, createElement, useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import {
+  Button,
+  Collapse,
+  IconButton,
   Navbar as MTNavbar,
   Typography,
-  Button,
-  IconButton,
-  Collapse,
 } from "@material-tailwind/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import PropTypes from "prop-types";
+import { createElement, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export function Navbar({ brandName, routes, action }) {
   const [openNav, setOpenNav] = useState(false);

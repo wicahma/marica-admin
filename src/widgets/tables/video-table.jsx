@@ -1,3 +1,5 @@
+import { setSelectedData } from "@/store/slices/table";
+import { PhotoIcon } from "@heroicons/react/24/outline";
 import {
   HandThumbDownIcon,
   HandThumbUpIcon,
@@ -5,13 +7,9 @@ import {
   TrashIcon,
   VideoCameraIcon,
 } from "@heroicons/react/24/solid";
-import { Button, Switch, Typography } from "@material-tailwind/react";
-import React, { useState } from "react";
+import { Button, Typography } from "@material-tailwind/react";
+import { useDispatch } from "react-redux";
 import Tooltips from "../micros/tooltips";
-import { PhotoIcon } from "@heroicons/react/24/outline";
-import { setSelectedData } from "@/store/slices/table";
-import { useDispatch, useSelector } from "react-redux";
-import { updateVideo } from "@/context/table";
 
 const Video = ({
   data: { _id, videoURL, thumbnail, type, like, dislike, title, description },

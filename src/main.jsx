@@ -9,16 +9,16 @@
 =========================================================
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import React, { StrictMode } from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import { BrowserRouter } from "react-router-dom";
-import { ThemeProvider } from "@material-tailwind/react";
 import { MaterialTailwindControllerProvider } from "@/context";
-import "../css/tailwind.css";
+import { ThemeProvider } from "@material-tailwind/react";
+import { StrictMode } from "react";
+import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-import store from "./store/redux";
+import { BrowserRouter } from "react-router-dom";
+import "../css/tailwind.css";
+import App from "./App";
 import { AuthProvider } from "./Auth";
+import store from "./store/redux";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <StrictMode>

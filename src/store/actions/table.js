@@ -37,8 +37,7 @@ export const videoData = createAsyncThunk(
 export const seriesData = createAsyncThunk(
   "fetch/get/series",
   async (value, thunkAPI) => {
-    // console.log(thunkAPI);``
-    const { getState, dispatch } = thunkAPI;
+    const { getState } = thunkAPI;
     const res = await axios({
       method: "GET",
       url: "/series/all",

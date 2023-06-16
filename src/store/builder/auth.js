@@ -4,7 +4,6 @@ export const authBuilder = (builder) => {
   builder
     .addCase(authLogin.pending, (state, action) => {
       state.main.loading = true;
-      console.log("action pending", action);
     })
     .addCase(authLogin.fulfilled, (state, action) => {
       if (action.payload.data.userType !== "admin") {
@@ -46,8 +45,6 @@ export const authBuilder = (builder) => {
         message: `Login gagal, ${action.error.message}!`,
         show: true,
       };
-      console.log("state", state);
-      console.log("action", action);
       state.main.loading = false;
     });
 };

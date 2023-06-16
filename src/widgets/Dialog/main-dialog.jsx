@@ -2,17 +2,13 @@ import { deleteSeries, deleteUser, deleteVideo } from "@/context/table";
 import { setAlert } from "@/store/slices/main";
 import {
   Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
   Dialog,
   DialogBody,
   DialogFooter,
   DialogHeader,
-  Typography,
+  Typography
 } from "@material-tailwind/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const MainDialog = ({

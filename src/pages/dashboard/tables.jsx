@@ -1,19 +1,19 @@
+import { setValue, submitHandler } from "@/context/table";
+import { tableTab } from "@/data";
+import Pagination from "@/widgets/micros/pagination";
+import MainTable from "@/widgets/tables";
 import {
-  Tabs,
-  TabsHeader,
-  Tab,
-  TabsBody,
-  TabPanel,
   Card,
   CardBody,
+  Tab,
+  TabPanel,
+  Tabs,
+  TabsBody,
+  TabsHeader,
 } from "@material-tailwind/react";
-import { tableTab } from "@/data";
-import MainTable from "@/widgets/tables";
-import { createElement, useState } from "react";
 import { Formik } from "formik";
-import { setValue, submitHandler } from "@/context/table";
+import { createElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Pagination from "@/widgets/micros/pagination";
 
 export function Tables() {
   const { user, video, series } = useSelector((state) => state.table),

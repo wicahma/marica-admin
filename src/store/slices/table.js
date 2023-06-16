@@ -1,17 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// {
-// _id: "",
-//       nama: "",
-//       email: "",
-//       essentials: {
-//         username: "",
-//         password: "",
-//         dataBilling: [],
-//         kidsAnalytics: [],
-//         phone: "",
-//       },
-//       validated: false,
-//       updatedAt: "",}
 
 export const tableInitialState = {
   user: {

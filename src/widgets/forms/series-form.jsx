@@ -1,3 +1,6 @@
+import { findBarang } from "@/context/forms/series";
+import { setAlert } from "@/store/slices/main";
+import { TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import {
   Button,
   Card,
@@ -10,12 +13,9 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { Form, useFormikContext } from "formik";
-import React, { useEffect, useMemo, useState } from "react";
-import Tooltips from "../micros/tooltips";
-import { TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
-import { findBarang } from "@/context/forms/series";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAlert } from "@/store/slices/main";
+import Tooltips from "../micros/tooltips";
 
 const SeriesForm = ({ video }) => {
   const {

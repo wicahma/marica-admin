@@ -1,14 +1,11 @@
-import React, { createElement, useState } from "react";
-import {
-  Typography,
-  Card,
-  CardHeader,
-  CardBody,
-} from "@material-tailwind/react";
-import { Formik } from "formik";
-import MainTable from "@/widgets/tables";
-import { useSelector } from "react-redux";
 import Pagination from "@/widgets/micros/pagination";
+import MainTable from "@/widgets/tables";
+import {
+  Card,
+  CardBody
+} from "@material-tailwind/react";
+import { createElement, useState } from "react";
+import { useSelector } from "react-redux";
 
 export function Payments({ paymentData: { icon, value, titles } }) {
   const { data, pages } = useSelector((state) => state.table.payment),

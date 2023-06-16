@@ -1,12 +1,11 @@
+import { SignIn } from "@/pages/auth";
+import { Home, Payments, Tables } from "@/pages/dashboard";
 import {
-  HomeIcon,
-  UserCircleIcon,
-  TableCellsIcon,
   ArrowRightOnRectangleIcon,
   CurrencyDollarIcon,
+  HomeIcon,
+  TableCellsIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Payments } from "@/pages/dashboard";
-import { SignIn } from "@/pages/auth";
 import { paymentTable } from "./data";
 
 const icon = {
@@ -23,12 +22,6 @@ export const routes = [
         path: "/home",
         element: <Home />,
       },
-      // {
-      //   icon: <UserCircleIcon {...icon} />,
-      //   name: "profile",
-      //   path: "/profile",
-      //   element: <Profile />,
-      // },
       {
         icon: <TableCellsIcon {...icon} />,
         name: "tables",

@@ -1,12 +1,10 @@
 import { configureStore, createReducer } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
+import { throttle } from "lodash";
+import { builderContext } from "./builder";
 import { authInitialState, authSlice } from "./slices/auth";
 import { mainInitialState, mainSlice } from "./slices/main";
 import { tableInitialState, tableSlice } from "./slices/table";
-import { authLogin } from "./actions";
-import { throttle } from "lodash";
-import { useRoutes } from "react-router-dom";
-import { builderContext } from "./builder";
 
 // NOTE - For load state to local storage / session storage
 const loadState = () => {
@@ -44,11 +42,6 @@ const rootReducer = createReducer(
     main: mainInitialState,
     table: tableInitialState,
   },
-  // {
-  //   auth: authInitialState,
-  //   main: mainInitialState,
-  //   table: tableInitialState,
-  // },
   (builder) => {
     builderContext(builder);
 
@@ -75,7 +68,6 @@ setupListeners(store.dispatch);
 
 store.subscribe(
   throttle(() => {
-    console.log("Data saved to local storage!");
     const { auth } = store.getState();
     saveState({ auth });
   }, 1000)

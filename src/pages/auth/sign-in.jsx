@@ -1,20 +1,19 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Input,
-  Checkbox,
-  Button,
-  Typography,
-} from "@material-tailwind/react";
-import { Form, Formik } from "formik";
-import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 import { authLogin } from "@/store/actions";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Checkbox,
+  Input,
+  Typography
+} from "@material-tailwind/react";
+import { Form, Formik } from "formik";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
 
 export function SignIn() {
   const dispatch = useDispatch(),

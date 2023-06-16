@@ -1,12 +1,11 @@
 import {
   getItemProps,
   next,
-  pageDivider,
-  prev,
+  prev
 } from "@/context/table/pagination";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { Button, IconButton } from "@material-tailwind/react";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 
 const Pagination = ({
   identifier,

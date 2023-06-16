@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import {
   ChartPieIcon,
-  UserIcon,
   ArrowRightOnRectangleIcon,
   TableCellsIcon,
 } from "@heroicons/react/24/solid";
@@ -17,11 +16,6 @@ export function Auth() {
         name: "dashboard",
         path: "/dashboard/home",
         icon: ChartPieIcon,
-      },
-      {
-        name: "profile",
-        path: "/dashboard/profile",
-        icon: UserIcon,
       },
       {
         name: "tables",

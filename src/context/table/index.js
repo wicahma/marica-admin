@@ -14,7 +14,6 @@ export const getAllDataTable = async (dispatch) => {
 };
 
 export const setValue = (value, data) => {
-  console.log(data);
   switch (value) {
     case "user":
       return data.user;
@@ -29,7 +28,6 @@ export const setValue = (value, data) => {
 
 export const activateSeries = async (id, data, dispatch, token) => {
   dispatch(setLoading(true));
-  console.log(data);
   const response = await axios
     .put(`/series/${id}`, data, {
       headers: {
@@ -37,7 +35,6 @@ export const activateSeries = async (id, data, dispatch, token) => {
       },
     })
     .then((res) => {
-      console.log(res);
       dispatch(
         setAlert({
           type: "success",
@@ -50,7 +47,6 @@ export const activateSeries = async (id, data, dispatch, token) => {
       dispatch(seriesData());
     })
     .catch((err) => {
-      console.log(err);
       dispatch(
         setAlert({
           type: "error",
@@ -98,7 +94,6 @@ export const validateUser = async (id, status, dispatch, token) => {
         })
       );
       dispatch(setLoading(false));
-      console.log(err);
     });
   return response;
 };
@@ -130,7 +125,6 @@ export const deleteUser = async (id, dispatch, token) => {
           show: true,
         })
       );
-      console.log(err);
     });
   return response;
 };
@@ -162,7 +156,6 @@ export const deleteVideo = async (id, dispatch, token) => {
           show: true,
         })
       );
-      console.log(err);
     });
   return response;
 };
@@ -194,7 +187,6 @@ export const deleteSeries = async (id, dispatch, token) => {
           show: true,
         })
       );
-      console.log(err);
     });
   return response;
 };
@@ -223,7 +215,6 @@ const createUser = async (data, dispatch, token, action) => {
           show: true,
         })
       );
-      console.log(err);
     })
     .finally(() => {
       dispatch(setLoading(false));
@@ -265,7 +256,6 @@ const createVideo = async (data, dispatch, token, action) => {
           show: true,
         })
       );
-      console.log(err);
     })
     .finally(() => {
       dispatch(setLoading(false));
@@ -301,7 +291,6 @@ const createSeries = async (data, dispatch, token, action) => {
       dispatch(seriesData());
     })
     .catch((err) => {
-      console.log(err);
       dispatch(
         setAlert({
           type: "error",
@@ -345,7 +334,6 @@ const updateUser = async (data, dispatch, token, action) => {
           show: true,
         })
       );
-      console.log(err);
     })
     .finally(() => dispatch(setLoading(false)));
   return response;
@@ -379,7 +367,6 @@ export const updateVideo = async (data, dispatch, token, action) => {
         })
       );
       dispatch(setLoading(false));
-      console.log(err);
     });
   return response;
 };
@@ -408,7 +395,6 @@ const updateImageVideo = async (values, dispatch, token, action) => {
       dispatch(videoData());
     })
     .catch((err) => {
-      console.log(err);
       dispatch(
         setAlert({
           type: "error",
@@ -431,7 +417,6 @@ const updateSeries = async (values, dispatch, token, action) => {
       },
     })
     .then((res) => {
-      console.log(res);
       dispatch(
         setAlert({
           type: "success",
@@ -443,7 +428,6 @@ const updateSeries = async (values, dispatch, token, action) => {
       dispatch(seriesData());
     })
     .catch((err) => {
-      console.log(err);
       dispatch(
         setAlert({
           type: "error",
@@ -469,7 +453,6 @@ const updateImageSeries = async (values, dispatch, token, action) => {
       },
     })
     .then((res) => {
-      console.log(res);
       dispatch(
         setAlert({
           type: "success",
@@ -481,7 +464,6 @@ const updateImageSeries = async (values, dispatch, token, action) => {
       dispatch(seriesData());
     })
     .catch((err) => {
-      console.log(err);
       dispatch(
         setAlert({
           type: "error",

@@ -1,30 +1,28 @@
-import { useLocation, Link } from "react-router-dom";
 import {
-  Navbar,
-  Typography,
-  Button,
-  IconButton,
+  setOpenConfigurator,
+  setOpenSidenav,
+  useMaterialTailwindController,
+} from "@/context";
+import {
+  Bars3Icon,
+  Cog6ToothIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/solid";
+import {
   Breadcrumbs,
+  Button,
+  Chip,
+  IconButton,
   Input,
   Menu,
   MenuHandler,
-  MenuList,
   MenuItem,
-  Avatar,
-  Chip,
+  MenuList,
+  Navbar,
+  Typography
 } from "@material-tailwind/react";
-import {
-  UserCircleIcon,
-  Cog6ToothIcon,
-  Bars3Icon,
-} from "@heroicons/react/24/solid";
-import {
-  useMaterialTailwindController,
-  setOpenConfigurator,
-  setOpenSidenav,
-} from "@/context";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController(),
@@ -32,12 +30,6 @@ export function DashboardNavbar() {
     { pathname } = useLocation(),
     { adminToken: token, adminData } = useSelector((state) => state.auth),
     [layout, page] = pathname.split("/").filter((el) => el !== "");
-
-  // useEffect(() => {
-  //   return () => {
-  //     console.log(token);
-  //   };
-  // }, [token]);
 
   return (
     <Navbar

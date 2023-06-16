@@ -1,6 +1,5 @@
 import { PaperClipIcon } from "@heroicons/react/24/solid";
 import { Button, Typography } from "@material-tailwind/react";
-import React from "react";
 
 const Payment = ({ data: { _id, event, data, createdAt } }) => {
   const className = "border-b border-blue-gray-50 py-3 px-2 text-left",

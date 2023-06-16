@@ -1,17 +1,16 @@
-import PropTypes from "prop-types";
-import { Link, NavLink } from "react-router-dom";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import {
-  Avatar,
-  Button,
-  IconButton,
-  Typography,
-} from "@material-tailwind/react";
-import { useMaterialTailwindController, setOpenSidenav } from "@/context";
-import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/solid";
+import { setOpenSidenav, useMaterialTailwindController } from "@/context";
 import { setAdminData, setAdminToken } from "@/store/slices/auth";
 import { setAlert } from "@/store/slices/main";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/solid";
+import {
+  Button,
+  IconButton,
+  Typography
+} from "@material-tailwind/react";
+import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
+import { Link, NavLink } from "react-router-dom";
 
 export function Sidenav({ brandImg, routes }) {
   const [controller, dispatch] = useMaterialTailwindController(),

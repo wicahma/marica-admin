@@ -1,10 +1,10 @@
+import { activateSeries } from "@/context/table";
+import { setSelectedData } from "@/store/slices/table";
 import { PencilIcon, PhotoIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { Button, Switch, Typography } from "@material-tailwind/react";
-import React, { useState } from "react";
-import Tooltips from "../micros/tooltips";
-import { setSelectedData } from "@/store/slices/table";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { activateSeries, submitHandler } from "@/context/table";
+import Tooltips from "../micros/tooltips";
 
 const Series = ({
   data: {

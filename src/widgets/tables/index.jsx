@@ -1,22 +1,21 @@
+import { filterData } from "@/context/table";
+import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
 import {
-  Avatar,
   Button,
   Card,
   CardBody,
   CardHeader,
   Input,
-  Typography,
+  Typography
 } from "@material-tailwind/react";
-import React, { useMemo, useState } from "react";
-import User from "./user-table";
-import Video from "./video-table";
-import Series from "./series-table";
+import { useMemo, useState } from "react";
 import EssentialDialog from "../Dialog/essential-dialog";
 import MainDialog from "../Dialog/main-dialog";
-import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
 import Tooltips from "../micros/tooltips";
-import { filterData } from "@/context/table";
 import Payment from "./payment-table";
+import Series from "./series-table";
+import User from "./user-table";
+import Video from "./video-table";
 
 const MainTable = ({
   identifier,

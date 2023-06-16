@@ -1,21 +1,21 @@
-import { Routes, Route } from "react-router-dom";
+import { setOpenConfigurator, useMaterialTailwindController } from "@/context";
+import { getAllDataTable } from "@/context/table";
+import routes from "@/routes";
+import { getBalance } from "@/store/actions";
+import { setAlert } from "@/store/slices/main";
+import AlertBar from "@/widgets/alert";
+import {
+  Configurator,
+  DashboardNavbar,
+  Footer,
+  Sidenav,
+} from "@/widgets/layout";
+import Loading from "@/widgets/loading";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { IconButton } from "@material-tailwind/react";
-import {
-  Sidenav,
-  DashboardNavbar,
-  Configurator,
-  Footer,
-} from "@/widgets/layout";
-import routes from "@/routes";
-import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
-import AlertBar from "@/widgets/alert";
-import { useEffect, useState } from "react";
-import Loading from "@/widgets/loading";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAlert } from "@/store/slices/main";
-import { getAllDataTable } from "@/context/table";
-import { getBalance } from "@/store/actions";
+import { Route, Routes } from "react-router-dom";
 
 export function Dashboard() {
   const [controller, dispatch] = useMaterialTailwindController(),

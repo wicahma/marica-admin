@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { Form, useFormikContext } from "formik";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const UserForm = (props) => {

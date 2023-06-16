@@ -11,7 +11,6 @@ export const tableBuilder = (builder) => {
   builder
     .addCase(userData.pending, (state, action) => {
       state.main.loading = true;
-      console.log("action pending", action);
     })
     .addCase(userData.fulfilled, (state, action) => {
       state.main.loading = false;
@@ -26,14 +25,11 @@ export const tableBuilder = (builder) => {
         message: `Fetching data gagal, ${action.error.message}!`,
         show: true,
       };
-      console.log("state", state);
-      console.log("action", action);
     });
 
   builder
     .addCase(videoData.pending, (state, action) => {
       state.main.loading = true;
-      console.log("action pending", action);
     })
     .addCase(videoData.fulfilled, (state, action) => {
       state.main.loading = false;
@@ -48,14 +44,11 @@ export const tableBuilder = (builder) => {
         message: `Fetching data gagal, ${action.error.message}!`,
         show: true,
       };
-      console.log("state", state);
-      console.log("action", action);
     });
 
   builder
     .addCase(seriesData.pending, (state, action) => {
       state.main.loading = true;
-      console.log("action pending", action);
     })
     .addCase(seriesData.fulfilled, (state, action) => {
       state.main.loading = false;
@@ -70,14 +63,11 @@ export const tableBuilder = (builder) => {
         message: `Fetching data gagal, ${action.error.message}!`,
         show: true,
       };
-      console.log("state", state);
-      console.log("action", action);
     });
 
   builder
     .addCase(paymentData.pending, (state, action) => {
       state.main.loading = true;
-      console.log("action pending", action);
     })
     .addCase(paymentData.fulfilled, (state, action) => {
       state.main.loading = false;
@@ -92,14 +82,11 @@ export const tableBuilder = (builder) => {
         message: `Fetching data gagal, ${action.error.message}!`,
         show: true,
       };
-      console.log("state", state);
-      console.log("action", action);
     });
 
   builder
     .addCase(getBalance.pending, (state, action) => {
       state.main.loading = true;
-      console.log("action pending balance", action);
     })
     .addCase(getBalance.fulfilled, (state, action) => {
       state.main.loading = false;
@@ -112,8 +99,6 @@ export const tableBuilder = (builder) => {
         message: `Fetching data Balance gagal, ${action.error.message}!`,
         show: true,
       };
-      console.log("state", state);
-      console.log("action", action);
     });
 
   return builder;

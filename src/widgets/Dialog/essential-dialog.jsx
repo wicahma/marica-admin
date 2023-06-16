@@ -7,7 +7,7 @@ import {
   Dialog,
   Typography,
 } from "@material-tailwind/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const EssentialDialog = ({ open, handleOpen = () => {}, data }) => {
   const [size, setSize] = useState("md");
